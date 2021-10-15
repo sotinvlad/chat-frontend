@@ -1,1 +1,8 @@
 @import '~antd/dist/antd.css';
+
+body,
+html,
+#root, .Wrapper{
+    height: 100%;
+    color: #202002;
+}

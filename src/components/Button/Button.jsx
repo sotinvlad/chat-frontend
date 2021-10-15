@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import './Button.scss'
 
 export const Button = (props) => (
-            <BaseButton {...props} className={classNames('button', props.className)}/>
+            <BaseButton {...props} className={classNames('button', props.className, {'button--large' : props.size ==='large'})}/>
 );
 
     
