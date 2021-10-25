@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button } from '../../../components/Button/Button';
-import { Block } from '../../../components/Block/Block';
+import { Button } from '../../components/Button/Button';
+import { Block } from '../../components/Block/Block';
 import { Form, Input } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';

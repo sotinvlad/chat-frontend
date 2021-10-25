@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Button } from '../../../components/Button/Button';
-import { Block } from '../../../components/Block/Block';
+import { Button } from '../../components/Button/Button';
+import { Block } from '../../components/Block/Block';
 import { Form, Input } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined, InfoCircleTwoTone } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -20,7 +20,10 @@ const RegisterForm = (props) => {
                     name="normal_login"
                     className="login-form"
                     initialValues={{ remember: true }}
-                    onFinish={props.onFinish}
+                    onFinish={() => { 
+                        props.onFinish();
+                        setSuccess(true)
+                    }}
                 >
                     <Form.Item
                         name="email"

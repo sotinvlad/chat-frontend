@@ -1,11 +1,17 @@
-import { Block } from "./components/Block/Block";
-import { Button } from "./components/Button/Button";
+import { Route } from "react-router";
 import Auth from "./pages/Auth/Auth";
+import Home from "./pages/Home/Home";
+
 
 function App() {
   return (
     <div className="Wrapper">
-      <Auth/>
+      <Route exact path={['/','/login','/register']}>
+        <Auth/>
+      </Route>
+      <Route exact path={'/im'}>
+        <Home/>
+      </Route>
     </div>
   );
 }
