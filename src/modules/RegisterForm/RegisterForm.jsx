@@ -4,10 +4,20 @@ import { Block } from '../../components/Block/Block';
 import { Form, Input } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined, InfoCircleTwoTone } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { withFormik } from 'formik';
 
 
 const RegisterForm = (props) => {
     const [success, setSuccess] = useState(false);
+
+    const {
+        values,
+        touched,
+        errors,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+      } = props;
 
     return ( 
         <div>
@@ -16,54 +26,72 @@ const RegisterForm = (props) => {
                 <p>Для входа в чат, вам нужно зарегистрироваться</p>
             </div>
             <Block>
-                {!success ? <Form
-                    name="normal_login"
-                    className="login-form"
-                    initialValues={{ remember: true }}
-                    onFinish={() => { 
-                        props.onFinish();
-                        setSuccess(true)
-                    }}
+                {!success ? 
+                <Form
+                    className='register-form'
+                    onSubmit={handleSubmit}
                 >
-                    <Form.Item
-                        name="email"
-                        rules={[{ required: true, message: 'Пожалуйста, введите ваш E-mail!' }]}
-
+                    <Form.Item  
+                        validateStatus={!touched.email ? '' : errors.email ? 'error' : 'success'}
+                        hasFeedback
+                        help={!touched.email ? null : errors.email}
                     >
-                        <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="E-mail" size='large' />
+                        <Input 
+                            prefix={<MailOutlined className='site-form-item-icon' />} 
+                            placeholder='E-mail' 
+                            size='large' 
+                            name='email'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.email}
+                            />
                     </Form.Item>
                     <Form.Item
-                        name="username"
-                        rules={[{ required: true, message: 'Пожалуйста, введите ваше имя!' }]}
-
+                        name='username'
                     >
-                        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Имя" size='large' />
+                        <Input prefix={<UserOutlined className='site-form-item-icon' />} placeholder='Имя' size='large' />
                     </Form.Item>
                     <Form.Item
-                        name="password"
-                        rules={[{ required: true, message: 'Пожалуйста, введите ваш пароль!' }]}
+                        validateStatus={!touched.password ? '' : errors.password ? 'error' : 'success'}
+                        hasFeedback
+                        help={!touched.password ? null : errors.password}
                     >
                         <Input
-                            prefix={<LockOutlined className="site-form-item-icon" />}
-                            type="password"
-                            placeholder="Пароль"
+                            prefix={<LockOutlined className='site-form-item-icon' />}
+                            type='password'
+                            placeholder='Пароль'
                             size='large'
+                            name='password'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.password}
                         />
                     </Form.Item>
                     <Form.Item
-                        name="password2"
-                        rules={[{ required: true, message: 'Пожалуйста, введите ваш пароль!' }]}
+                        validateStatus={!touched.passwordRepeat ? '' : errors.passwordRepeat ? 'error' : 'success'}
+                        hasFeedback
+                        help={!touched.passwordRepeat ? null : errors.passwordRepeat}
                     >
                         <Input
-                            prefix={<LockOutlined className="site-form-item-icon" />}
-                            type="password"
-                            placeholder="Повторите пароль"
+                            prefix={<LockOutlined className='site-form-item-icon' />}
+                            type='password'
+                            placeholder='Повторите пароль'
                             size='large'
+                            name='passwordRepeat'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.passwordRepeat}
                         />
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" className="login-form-button" size='large'>
+                        <Button 
+                            type='primary' 
+                            htmlType='submit' 
+                            className='login-form-button' 
+                            size='large'
+                            onClick={handleSubmit}
+                        >
                             Зарегистрироваться
                         </Button>
                     </Form.Item>
@@ -82,4 +110,41 @@ const RegisterForm = (props) => {
     )
 }
 
-export default RegisterForm;
+const RegisterFormWithFormik = withFormik({
+    mapPropsToValues: (props) => ({  }),
+  
+    validate: values => {
+      const errors = {};
+  
+      if (!values.email) {
+        errors.email = 'Обязательно';
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = 'Неверный формат';
+      }
+
+      if (!values.password) {
+          errors.password = 'Обязательно';
+      } else if (!/^(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]{6,16}$/i.test(values.password)) {
+          errors.password = 'Пароль должен содержать букву и цифру'
+      }
+
+      if (!values.passwordRepeat) {
+          errors.passwordRepeat = 'Обязательно';
+      } else if (values.password !== values.passwordRepeat) {
+          errors.passwordRepeat = 'Неверный пароль'
+      }
+  
+      return errors;
+    },
+  
+    handleSubmit: (values, { setSubmitting }) => {
+      setTimeout(() => {
+        alert(JSON.stringify(values, null, 2));
+        setSubmitting(false);
+      }, 1000);
+    },
+  
+    displayName: 'RegisterForm',
+  })(RegisterForm);
+
+export default RegisterFormWithFormik;
