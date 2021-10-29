@@ -4,9 +4,21 @@ import { Block } from '../../components/Block/Block';
 import { Form, Input } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { withFormik } from 'formik';
+import validateFunc from '../../utils/validate';
 
 
 const LoginForm = (props) => {
+
+    const {
+        values,
+        touched,
+        errors,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+    } = props;
+
     return (
         <div>
             <div className='auth__top'>
@@ -15,32 +27,46 @@ const LoginForm = (props) => {
             </div>
             <Block>
                 <Form
-                    name="normal_login"
-                    className="login-form"
-                    initialValues={{ remember: true }}
-                    onFinish={props.onFinish}
+                    className='login-form'
+                    onSubmit={handleSubmit}
                 >
                     <Form.Item
-                        name="email"
-                        rules={[{ required: true, message: 'Пожалуйста, введите ваш E-mail!' }]}
-
-                    >
-                        <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="E-mail" size='large' />
-                    </Form.Item>
-                    <Form.Item
-                        name="password"
-                        rules={[{ required: true, message: 'Пожалуйста, введите ваш пароль!' }]}
+                        validateStatus={!touched.email ? '' : errors.email ? 'error' : 'success'}
+                        hasFeedback
+                        help={!touched.email ? null : errors.email}
                     >
                         <Input
-                            prefix={<LockOutlined className="site-form-item-icon" />}
-                            type="password"
-                            placeholder="Пароль"
+                            prefix={<MailOutlined className='site-form-item-icon' />}
+                            placeholder='E-mail'
                             size='large'
+                            name='email'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.email}
                         />
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" className="login-form-button" size='large'>
+                        <Input
+                            prefix={<LockOutlined className='site-form-item-icon' />}
+                            type='password'
+                            placeholder='Пароль'
+                            size='large'
+                            name='password'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.password}
+                        />
+                    </Form.Item>
+
+                    <Form.Item>
+                        <Button
+                            type='primary'
+                            htmlType='submit'
+                            className='login-form-button'
+                            size='large'
+                            onClick={handleSubmit}
+                        >
                             Войти в аккаунт
                         </Button>
                     </Form.Item>
@@ -53,4 +79,27 @@ const LoginForm = (props) => {
     )
 }
 
-export default LoginForm;
+const LoginFormWithFormik = withFormik({
+    mapPropsToValues: (props) => ({
+        email: '',
+    }),
+
+    validate: values => {
+        const errors = {};
+
+        validateFunc({ isAuth: true, errors, values });
+
+        return errors;
+    },
+
+    handleSubmit: (values, { setSubmitting }) => {
+        setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+        }, 1000);
+    },
+
+    displayName: 'LoginForm',
+})(LoginForm);
+
+export default LoginFormWithFormik;

@@ -9,16 +9,28 @@ import noreaded from './../../assets/img/noreaded.svg'
 
 const Message = (props) => {
     return (
-        <div className={classNames('message', props.isMe ? 'message--isme' : '')}>
+        <div className={classNames('message', 
+        { 
+            'message--isme' : props.isMe,
+            'message--typing' : props.isTyping,
+            'message--image' : props.attachments && props.attachments.length === 1,
+        })}>
             <div className="message__content">
                 
                 <div className="message__avatar">
-                    <img src={props.avatar} alt={`Avatar ${props.user?.fullname || 'unknown'}`} />
+                    <img src={props?.avatar || ''} alt={`Avatar ${props.user?.fullname || 'unknown'}`} />
                 </div>
                 <div className="message__info">
-                    <div className="message__bubble">
-                        <p className="message__text">{props.text}</p>
-                    </div>
+                    {(props.text || props.isTyping) &&<div className="message__bubble">
+                        {props.text && <p className="message__text">{props.text}</p>}
+                        {props.isTyping &&
+                            <div className="message--typing">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        }
+                    </div>}
                     <div className="message__attachments">
                         { props.attachments && props.attachments.map(item => (
                             <div className="message__attachment-item">
@@ -26,7 +38,7 @@ const Message = (props) => {
                             </div>
                         ))}
                     </div>
-                    <span className="message__date">{formatDistanceToNow(props.date, { addSuffix: true, locale: ru })}</span>
+                    {props.date && <span className="message__date">{formatDistanceToNow(props.date, { addSuffix: true, locale: ru })}</span>}
                 </div>
                 {props.isMe ? props.isReaded  ? (
                     <img 

@@ -32,7 +32,23 @@ const Home = () => {
                 text='Неплохо поживает!' 
                 date={new Date('Mon Oct 18 2021 16:47:54')}
                 isMe={true}
-                isReaded={false}
+                isReaded={true}
+            />
+           
+            <Message 
+                avatar='https://sun9-43.userapi.com/s/v1/ig2/mgWIq-bl-taWp9l_DSAijduy8XYWx73es7xELgGV2dStOseDlNzpG2VhK5u9bL1HiHDp3EpsB8p8oQniuqZwfOah.jpg?size=100x100&quality=96&crop=182,322,1193,1193&ava=1' 
+                date={new Date('Mon Oct 18 2021 16:37:54')}
+                attachments = {[
+                    {
+                        filename: 'image.jpg',
+                        url: 'https://picsum.photos/200/200?random=1'
+                    }
+                ]}
+            />
+
+             <Message 
+                avatar='https://sun9-43.userapi.com/s/v1/ig2/mgWIq-bl-taWp9l_DSAijduy8XYWx73es7xELgGV2dStOseDlNzpG2VhK5u9bL1HiHDp3EpsB8p8oQniuqZwfOah.jpg?size=100x100&quality=96&crop=182,322,1193,1193&ava=1' 
+                isTyping
             />
         </section>
     )
