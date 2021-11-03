@@ -1,4 +1,5 @@
 import React from 'react';
+import DialogItem from '../../components/DialogItem/DialogItem';
 import Message from '../../components/Message/Message';
 
 import './Home.scss';
@@ -8,7 +9,48 @@ const Home = () => {
 
     return (
         <section className='home'>
-            <Message 
+            <div className="dialogs">
+                <DialogItem 
+                    isMe={true}
+                    user = {{
+                        fullname: 'Jack The Riper',
+                        isOnline: true,
+                        unreaded: 3,
+                    }}
+                    />
+                <DialogItem 
+                    isMe={false}
+                    user = {{
+                        fullname: 'Jack The Riper',
+                        isOnline: false,
+                        unreaded: 1,
+                    }}
+                    />
+                <DialogItem 
+                    isMe={false}
+                    user = {{
+                        fullname: 'Jack The Riper',
+                        isOnline: true,
+                        unreaded: 0,
+                    }}
+                    />
+            </div>
+            
+            {/* <Dialogs items={
+                {
+                    user: {
+                        avatar: '',
+                        username: ''
+                    },
+                    message: {
+                        text: '',
+                        createdAt: new Date(),
+                        isReaded: false
+                    }
+                }
+            }
+            /> */}
+            {/* <Message 
                 avatar='https://sun9-43.userapi.com/s/v1/ig2/mgWIq-bl-taWp9l_DSAijduy8XYWx73es7xELgGV2dStOseDlNzpG2VhK5u9bL1HiHDp3EpsB8p8oQniuqZwfOah.jpg?size=100x100&quality=96&crop=182,322,1193,1193&ava=1' 
                 text='Добрый вечер! Как поживает диспетчер? Добрый вечер! Как поживает диспетчер?' 
                 date={new Date('Mon Oct 18 2021 16:37:54')}
@@ -49,7 +91,7 @@ const Home = () => {
              <Message 
                 avatar='https://sun9-43.userapi.com/s/v1/ig2/mgWIq-bl-taWp9l_DSAijduy8XYWx73es7xELgGV2dStOseDlNzpG2VhK5u9bL1HiHDp3EpsB8p8oQniuqZwfOah.jpg?size=100x100&quality=96&crop=182,322,1193,1193&ava=1' 
                 isTyping
-            />
+            /> */}
         </section>
     )
 }

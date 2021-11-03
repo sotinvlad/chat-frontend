@@ -4,8 +4,8 @@ import './Message.scss';
 import { formatDistanceToNow } from 'date-fns/esm';
 import ru from 'date-fns/locale/ru/index.js';
 import classNames from 'classnames';
-import readed from './../../assets/img/readed.svg'
-import noreaded from './../../assets/img/noreaded.svg'
+import IconReaded from '../IconReaded/IconReaded';
+
 
 const Message = (props) => {
     return (
@@ -40,19 +40,7 @@ const Message = (props) => {
                     </div>
                     {props.date && <span className="message__date">{formatDistanceToNow(props.date, { addSuffix: true, locale: ru })}</span>}
                 </div>
-                {props.isMe ? props.isReaded  ? (
-                    <img 
-                        src={readed} 
-                        className='message__readed'
-                        alt='Readed icon'
-                    /> 
-                ) : ( 
-                    <img 
-                        src={noreaded} 
-                        className='message__readed'
-                        alt='No readed icon'
-                    />
-                ) : null}
+                <IconReaded isMe={props.isMe} isReaded={props.isReaded}/>
             </div>
         </div>
     )
