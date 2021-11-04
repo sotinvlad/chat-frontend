@@ -8,6 +8,7 @@ const Dialogs = (props) => {
             {orderBy(props.items, 'createdAt', 'desc').map(item =>
                 <DialogItem
                     key={item._id}
+                    id={item._id}
                     user={item.user}
                     lastMessage={item.lastMessage}
                     isMe={item.isMe} 

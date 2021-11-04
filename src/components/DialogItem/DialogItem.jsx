@@ -1,7 +1,8 @@
 import './DialogItem.scss';
 import IconReaded from '../IconReaded/IconReaded';
 import classNames from 'classnames';
-import { format, isToday } from 'date-fns/esm';
+import Avatar from '../Avatar/Avatar';
+import { format, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
 const getMessageTime = createdAt => {
@@ -12,24 +13,12 @@ const getMessageTime = createdAt => {
     }
 }
 
-const getAvatar = avatar => {
-    if (avatar) {
-        return (
-            <img
-                src={avatar}
-                alt={`user avatar`}
-            />
-        )
-    } else {
-        // create avatar
-    }
-}
-
 const DialogItem = (props) => {
+    console.log(props)
     return (
         <div className={classNames('dialogs__item', {'dialogs__item--online' : props.user.isOnline})}>
             <div className="dialogs__item-avatar">
-                {getAvatar(props.user.avatar)}
+                <Avatar user={props.user} id={props.id} />
             </div>
             <div className="dialogs__item-info">
                 <div className="dialogs__item-info-top">

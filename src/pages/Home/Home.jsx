@@ -13,10 +13,10 @@ const Home = () => {
                     items={[
                         
                         {
-                            _id: 2,
+                            _id: '3ra0b5144f03552463cfeea5bd1ff512',
                             user: {
                                 fullname: 'Jack The Friend',
-                                avatar: 'https://sun9-43.userapi.com/s/v1/ig2/mgWIq-bl-taWp9l_DSAijduy8XYWx73es7xELgGV2dStOseDlNzpG2VhK5u9bL1HiHDp3EpsB8p8oQniuqZwfOah.jpg?size=100x100&quality=96&crop=182,322,1193,1193&ava=1',
+                                avatar: '',
                                 isOnline: false,
                                 unreaded: 0,
                             },
