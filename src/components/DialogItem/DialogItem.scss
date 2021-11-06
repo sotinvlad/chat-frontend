@@ -1,9 +1,12 @@
 .dialogs {
-    width: 300px;
     &__item {
         $item: &;
         display: flex;
-        margin-bottom: 15px;
+        padding: 10px 20px;
+        cursor: pointer;
+        &:hover, &.active {
+            background-color: #F3F7FF;
+        }
         &-avatar {
             position: relative;
             margin-right: 10px;

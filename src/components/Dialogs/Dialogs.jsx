@@ -1,11 +1,19 @@
 import { orderBy } from 'lodash-es';
-import React from 'react'
-import DialogItem from '../DialogItem/DialogItem';
+import React from 'react';
+import { Empty, Input } from 'antd';
 
-const Dialogs = (props) => {
+import DialogItem from '../DialogItem/DialogItem';
+import './Dialogs.scss';
+
+
+export const Dialogs = (props) => {
     return (
         <div className="dialogs">
-            {orderBy(props.items, 'createdAt', 'desc').map(item =>
+            <div className="dialogs__search">
+                <Input.Search placeholder="Поиск среди контактов" onChange={value => props.handleChange(value)} value={props.searchValue}/>
+            </div>
+            
+            {props.items.length ? orderBy(props.items, 'createdAt', 'desc').map(item =>
                 <DialogItem
                     key={item._id}
                     id={item._id}
@@ -15,10 +23,8 @@ const Dialogs = (props) => {
                     isReaded={item.isReaded}
                     createdAt={item.createdAt}
                 />
-            )}
+            ): <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description = {'Контакты не найдены :('}/>}
 
         </div>
     )
 }
-
-export default Dialogs;

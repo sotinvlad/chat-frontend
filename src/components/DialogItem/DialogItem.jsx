@@ -2,19 +2,19 @@ import './DialogItem.scss';
 import IconReaded from '../IconReaded/IconReaded';
 import classNames from 'classnames';
 import Avatar from '../Avatar/Avatar';
-import { format, isToday } from 'date-fns';
+import { format, isToday, parseISO } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
 const getMessageTime = createdAt => {
-    if (!isToday(createdAt)) {
-        return format(createdAt, 'dd MMM', { locale: ru } )
+    const date = new Date(createdAt);
+    if (!isToday(date)) {
+        return format(date, 'dd MMM', { locale: ru } )
     } else {
-        return format(createdAt, 'HH:mm')
+        return format(date, 'HH:mm')
     }
 }
 
 const DialogItem = (props) => {
-    console.log(props)
     return (
         <div className={classNames('dialogs__item', {'dialogs__item--online' : props.user.isOnline})}>
             <div className="dialogs__item-avatar">

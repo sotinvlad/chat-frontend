@@ -1,0 +1,16 @@
+.dialogs {
+    &__search {
+        padding: 2px 20px 20px 20px;
+
+        .ant-input {
+            background-color: #f7f8f9;
+            border: 0;
+            height: 34px;
+            padding: 4px 11px 6px;
+        }
+        .ant-btn {
+            background-color: #f7f8f9;
+            border: 0;
+        }
+    }
+}
