@@ -16,7 +16,10 @@ const getMessageTime = createdAt => {
 
 const DialogItem = (props) => {
     return (
-        <div className={classNames('dialogs__item', {'dialogs__item--online' : props.user.isOnline})}>
+        <div 
+            className={classNames('dialogs__item', {'dialogs__item--online' : props.user.isOnline})}
+            onClick={() => props.onSelect(props.id)}
+            >
             <div className="dialogs__item-avatar">
                 <Avatar user={props.user} id={props.id} />
             </div>

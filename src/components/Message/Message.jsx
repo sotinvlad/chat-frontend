@@ -12,7 +12,7 @@ import convertCurrentTime from '../../utils/helpers/convertCurrentTime';
 
 
 const Message = (props) => {
-
+    console.log(props)
     return (
         <div className={classNames('message',
             {
@@ -47,7 +47,7 @@ const Message = (props) => {
                             </div>
                         ))}
                     </div>
-                    {props.date && <span className="message__date">{formatDistanceToNow(props.date, { addSuffix: true, locale: ru })}</span>}
+                    {props.date && <span className="message__date">{formatDistanceToNow(new Date(props.date), { addSuffix: true, locale: ru })}</span>}
                 </div>
                 <IconReaded isMe={props.isMe} isReaded={props.isReaded} />
             </div>
