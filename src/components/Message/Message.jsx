@@ -12,7 +12,6 @@ import convertCurrentTime from '../../utils/helpers/convertCurrentTime';
 
 
 const Message = (props) => {
-    console.log(props)
     return (
         <div className={classNames('message',
             {
@@ -85,12 +84,11 @@ const MessageAudio = ({ audio }) => {
             setProgress((audioElem.current.currentTime / duration) * 100);
         });
         return (() => {
-            audioElem.current.removeEventListener('playing', () => setIsPlaying(true));
-            audioElem.current.removeEventListener('ended', () => setIsPlaying(false));
-            audioElem.current.removeEventListener('pause', () => setIsPlaying(false));
+            // audioElem.current.removeEventListener('playing', () => setIsPlaying(true));
+            // audioElem.current.removeEventListener('ended', () => setIsPlaying(false));
+            // audioElem.current.removeEventListener('pause', () => setIsPlaying(false));
         })
     })
-console.log(audio)
     return <div className="message__audio">
         <audio src={audio} ref={audioElem} preload='true' />
         <div className="message__audio-progress" style={{ width: `${progress}%`, height: '100%' }}></div>

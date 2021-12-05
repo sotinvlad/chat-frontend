@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux';
 
 import { Dialogs as BaseDialogs } from '../components/Dialogs/Dialogs';
-import dialogsActions from './../actions/dialogs';
+import dialogsActions from './../redux/actions/dialogs';
 
 
 const Dialogs = (props) => {
@@ -32,7 +32,8 @@ const Dialogs = (props) => {
 }
 
 const mapStateToProps = (state) => ({
-    items: state.dialogs.items
+    items: state.dialogs.items,
+    isLoading: state.dialogs.isLoading
 })
 
 export default connect(mapStateToProps, dialogsActions)(Dialogs);

@@ -32,7 +32,6 @@
 
 
         &-dialogs {
-            overflow: auto;
             height: calc(100% - 136px);
         }
     }
@@ -90,8 +89,7 @@
         }
 
         &-messages {
-            padding: 20px 30px;
-            overflow: auto;
+            padding: 20px 0px 20px 30px;
             height: calc(100% - 138px);
             position: relative;
             .ant-empty {
