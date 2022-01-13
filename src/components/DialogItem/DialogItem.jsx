@@ -2,7 +2,7 @@ import './DialogItem.scss';
 import IconReaded from '../IconReaded/IconReaded';
 import classNames from 'classnames';
 import Avatar from '../Avatar/Avatar';
-import { format, isToday, parseISO } from 'date-fns';
+import { format, isToday } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
 const getMessageTime = createdAt => {
@@ -17,7 +17,7 @@ const getMessageTime = createdAt => {
 const DialogItem = (props) => {
     return (
         <div 
-            className={classNames('dialogs__item', {'dialogs__item--online' : props.user.isOnline})}
+            className={classNames('dialogs__item', {'dialogs__item--online' : props.user.isOnline, 'dialogs__item--active' : props.currentDialogId === props.id})}
             onClick={() => props.onSelect(props.id)}
             >
             <div className="dialogs__item-avatar">

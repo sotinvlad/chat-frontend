@@ -12,7 +12,7 @@ const Messages = (props) => {
         if (props.currentDialogId !== null){
             props.fetchMessages(props.currentDialogId);
         }
-    }, [props.currentDialogId])
+    }, [props.currentDialogId, props])
 
     useEffect(() => {
         messagesBlock.current.scrollTo(0,999);

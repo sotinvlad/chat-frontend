@@ -19,7 +19,7 @@ const Dialogs = (props) => {
             props.fetchDialogs();
         }
         setFiltered(props.items);
-    }, [props.items])
+    }, [props.items, props])
     
     return (
         <BaseDialogs 
@@ -33,7 +33,8 @@ const Dialogs = (props) => {
 
 const mapStateToProps = (state) => ({
     items: state.dialogs.items,
-    isLoading: state.dialogs.isLoading
+    isLoading: state.dialogs.isLoading,
+    currentDialogId: state.dialogs.currentDialogId
 })
 
 export default connect(mapStateToProps, dialogsActions)(Dialogs);

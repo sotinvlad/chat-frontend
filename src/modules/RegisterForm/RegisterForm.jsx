@@ -10,7 +10,7 @@ import validateFunc from '../../utils/validate';
 
 const RegisterForm = (props) => {
     const [success, setSuccess] = useState(false);
-
+    setSuccess(false);
     const {
         values,
         touched,

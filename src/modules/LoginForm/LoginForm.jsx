@@ -1,11 +1,21 @@
-import React from 'react'
-import { Button } from '../../components/Button/Button';
-import { Block } from '../../components/Block/Block';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { Form, Input } from 'antd';
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
 import { withFormik } from 'formik';
-import validateFunc from '../../utils/validate';
+
+import { Button } from '../../components/Button/Button';
+import { Block } from '../../components/Block/Block';
+// import validateFunc from '../../utils/validate';
+import store from './../../redux/store';
+import userActions from './../../redux/actions/user';
+import userApi from './../../utils/api/user';
+import openNotification from '../../utils/helpers/openNotification';
+
+
+
+
+
 
 
 const LoginForm = (props) => {
@@ -18,8 +28,8 @@ const LoginForm = (props) => {
         handleBlur,
         handleSubmit,
     } = props;
-
     return (
+        
         <div>
             <div className='auth__top'>
                 <h2>Войти в аккаунт</h2>
@@ -87,16 +97,23 @@ const LoginFormWithFormik = withFormik({
     validate: values => {
         const errors = {};
 
-        validateFunc({ isAuth: true, errors, values });
+        // validateFunc({ isAuth: true, errors, values });
 
         return errors;
     },
 
     handleSubmit: (values, { setSubmitting }) => {
-        setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+        userApi.login(values)
+        .then(data => {
+            store.dispatch(userActions.setUserData(data.data));
+            window.localStorage.token = data.data.accessToken;
             setSubmitting(false);
-        }, 1000);
+            openNotification('success', 'Вы успешно вошли!');
+        })
+        .catch(err => {
+            console.log(err);
+            openNotification('error', 'Неверный логин или пароль!')
+        })
     },
 
     displayName: 'LoginForm',

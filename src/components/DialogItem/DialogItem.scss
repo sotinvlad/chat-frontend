@@ -33,6 +33,9 @@
                 }
             }
         }
+        &--active, &--active:hover{
+            background-color: #1890ff
+        }
 
         &-info {
             display: flex;

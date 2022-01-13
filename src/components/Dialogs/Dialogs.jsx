@@ -1,5 +1,5 @@
 import { orderBy } from 'lodash-es';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Empty, Input, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
@@ -30,6 +30,7 @@ export const Dialogs = (props) => {
                             isReaded={item.isReaded}
                             createdAt={item.createdAt}
                             onSelect={props.setCurrentDialogId}
+                            currentDialogId={props.currentDialogId}
                         />
                     )
                     : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description = {'Контакты не найдены :('}/>

@@ -1,7 +1,11 @@
 import axios from 'axios';
 
-export  default {
+axios.defaults.headers.common['Authorization'] = `Bearer ${window.localStorage.token}`
+
+const dialogsAPI = {
     getAll: () => {
-        return axios.get('http://localhost:9999/dialogs');
+        return axios.get('http://localhost:3000/dialogs');
     }
 }
+
+export default dialogsAPI;
