@@ -17,9 +17,9 @@ const actions = {
     }),
 
 
-    fetchDialogs: () => (dispatch) => {
+    fetchDialogs: (id) => (dispatch) => {
         dispatch(actions.setIsLoading(true));
-        dialogsAPI.getAll().then(data => {
+        dialogsAPI.getAll(id).then(data => {
             dispatch(actions.setDialogs(data.data));
         })
     }

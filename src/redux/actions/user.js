@@ -8,6 +8,7 @@ const actions = {
         type: 'USER:SET_ISAUTH',
         payload: data
     }),
+
 }
 
 export default actions;

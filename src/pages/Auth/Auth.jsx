@@ -6,18 +6,15 @@ import RegisterForm from '../../modules/RegisterForm/RegisterForm';
 
 
 const Auth = () => {
-    const onFinish = (values) => {
-        console.log('Success:', values);
-    };
 
     return (
         <section className='auth'>
             <div className='auth__content'>
                 <Route exact path={['/','/login']}>
-                    <LoginForm onFinish={onFinish} />
+                    <LoginForm />
                 </Route>
                 <Route exact path='/register'>
-                    <RegisterForm/>
+                    <RegisterForm />
                 </Route>
                 
             </div>

@@ -107,7 +107,7 @@ const LoginFormWithFormik = withFormik({
         .then(data => {
             store.dispatch(userActions.setUserData(data.data));
             window.localStorage.token = data.data.accessToken;
-            setSubmitting(false);
+            //setSubmitting(false);
             openNotification('success', 'Вы успешно вошли!');
         })
         .catch(err => {

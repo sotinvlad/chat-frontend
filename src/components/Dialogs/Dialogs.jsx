@@ -6,6 +6,7 @@ import classnames from 'classnames';
 
 import DialogItem from '../DialogItem/DialogItem';
 import './Dialogs.scss';
+import generateDialogName from '../../utils/helpers/generateDialogName';
 
 
 export const Dialogs = (props) => {
@@ -24,8 +25,8 @@ export const Dialogs = (props) => {
                         <DialogItem
                             key={item._id}
                             id={item._id}
-                            user={item.user}
-                            lastMessage={item.lastMessage}
+                            user={generateDialogName(item.dialogParticipants, props.userData._id)}
+                            lastMessage={item.lastMessage ? item.lastMessage : "Сообщений нет..."}
                             isMe={item.isMe} 
                             isReaded={item.isReaded}
                             createdAt={item.createdAt}

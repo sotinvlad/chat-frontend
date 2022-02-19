@@ -8,6 +8,12 @@ const validate = ({ isAuth, errors, values }) => {
             }
         },
 
+        fullname: (errors, value) => {
+            if (!value) {
+                errors.fullname = 'Введите имя пользователя';
+            }
+        },
+
         password: (errors, value) => {
             if (!value) {
                 errors.password = 'Введите пароль';

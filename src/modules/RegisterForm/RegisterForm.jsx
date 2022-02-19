@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react';
 import { Button } from '../../components/Button/Button';
 import { Block } from '../../components/Block/Block';
-import { Form, Input } from 'antd';
-import { UserOutlined, LockOutlined, MailOutlined, InfoCircleTwoTone } from '@ant-design/icons';
+import { Form, Input, Result } from 'antd';
+import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { withFormik } from 'formik';
-import validateFunc from '../../utils/validate';
 
+import validateFunc from '../../utils/validate';
+import userApi from './../../utils/api/user';
+import openNotification from '../../utils/helpers/openNotification';
 
 const RegisterForm = (props) => {
-    const [success, setSuccess] = useState(false);
-    setSuccess(false);
+
     const {
         values,
         touched,
@@ -27,7 +28,7 @@ const RegisterForm = (props) => {
                 <p>Для входа в чат, вам нужно зарегистрироваться</p>
             </div>
             <Block>
-                {!success ?
+                {!values.isSuccess ?
                     <Form
                         className='register-form'
                         onSubmit={handleSubmit}
@@ -48,9 +49,19 @@ const RegisterForm = (props) => {
                             />
                         </Form.Item>
                         <Form.Item
-                            name='username'
+                            validateStatus={!touched.fullname ? '' : errors.fullname ? 'error' : 'success'}
+                            hasFeedback
+                            help={!touched.fullname ? null : errors.fullname}
                         >
-                            <Input prefix={<UserOutlined className='site-form-item-icon' />} placeholder='Имя' size='large' />
+                            <Input 
+                                prefix={<UserOutlined className='site-form-item-icon' />} 
+                                placeholder='Имя' 
+                                size='large'
+                                name='fullname'
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.fullname}
+                            />
                         </Form.Item>
                         <Form.Item
                             validateStatus={!touched.password ? '' : errors.password ? 'error' : 'success'}
@@ -101,9 +112,11 @@ const RegisterForm = (props) => {
                         </Form.Item>
                     </Form> :
                     <div className='auth__success-block'>
-                        <InfoCircleTwoTone style={{ fontSize: '50px' }} />
-                        <h2>Подтвердите свой аккаунт</h2>
-                        <p>На Вашу почту отправлено письмо с ссылкой на подтверждение аккаунта</p>
+                        <Result
+                            status="success"
+                            title="Вы успешно зарегистрированы!"
+                            subTitle="На Вашу почту отправлено письмо с ссылкой на подтверждение аккаунта."
+                        />
                     </div>
                 }
             </Block>
@@ -116,7 +129,8 @@ const RegisterFormWithFormik = withFormik({
         email: '',
         password: '',
         passwordRepeat: '',
-        username: '',
+        fullname: '',
+        isSuccess: false,
     }),
 
     validate: values => {
@@ -128,10 +142,20 @@ const RegisterFormWithFormik = withFormik({
     },
 
     handleSubmit: (values, { setSubmitting }) => {
-        setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+        const userData = {
+            email: values.email,
+            password: values.password,
+            fullname: values.fullname,
+        }
+        userApi.register(userData)
+        .then(data => {
+            values.isSuccess = true;
             setSubmitting(false);
-        }, 1000);
+        })
+        .catch(err => {
+            console.log(err);
+            openNotification('error', 'Пользователь с таким e-mail уже существует', 4);
+        })
     },
 
     displayName: 'RegisterForm',

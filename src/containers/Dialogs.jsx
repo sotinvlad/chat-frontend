@@ -10,13 +10,16 @@ const Dialogs = (props) => {
     const [filtered, setFiltered] = useState(props.items);
 
     const handleChange = (value) => {
-        setFiltered(props.items.filter(item => item.user.fullname.toLowerCase().indexOf(value.target.value.toLowerCase()) >= 0));
+        // setFiltered(props.items.filter(item => { 
+        //     item.dialogParticipants.indexOf().toLowerCase().indexOf(value.target.value.toLowerCase()) >= 0
+        // }));
+        setFiltered(props.items);
         setInputValue(value.target.value);
     }
     
     useEffect(() => {
         if (!props.items.length){
-            props.fetchDialogs();
+            props.fetchDialogs(props.userData._id);
         }
         setFiltered(props.items);
     }, [props.items, props])
@@ -34,7 +37,8 @@ const Dialogs = (props) => {
 const mapStateToProps = (state) => ({
     items: state.dialogs.items,
     isLoading: state.dialogs.isLoading,
-    currentDialogId: state.dialogs.currentDialogId
+    currentDialogId: state.dialogs.currentDialogId, 
+    userData: state.user.data
 })
 
 export default connect(mapStateToProps, dialogsActions)(Dialogs);
