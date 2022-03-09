@@ -1,7 +1,15 @@
+/*
+-Точка входа React-application
+-Отрисовывает компонент App
+-Обертка над App является провайдером store
+*/
+
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import socket from './core/socket';
 
 import App from './App';
 import './styles/index.scss';

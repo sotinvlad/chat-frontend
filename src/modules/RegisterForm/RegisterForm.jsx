@@ -1,3 +1,11 @@
+/*
+-Отрисовывает форму регистрации или сообщение об успешной регистрации и просьбе подтвердить аккаунт
+-Вызывает функцию, валидирующую данные формы
+-При Submit отправляет JSON с данными формы на сервер, получает результат регистрации
+-Форма имеет state isSuccess, изначально равный false, при успешной регистрации он присваеивается true и 
+ компонент вместо формы отрисовывает сообщение от успешной регистрации и просьбой подтвердить аккаунт
+-При неудачной регистрации всплывает нотификация, с сообщение, что такой пользователь уже существует
+*/
 import React from 'react';
 import { Button } from '../../components/Button/Button';
 import { Block } from '../../components/Block/Block';
@@ -150,7 +158,7 @@ const RegisterFormWithFormik = withFormik({
         userApi.register(userData)
         .then(data => {
             values.isSuccess = true;
-            setSubmitting(false);
+            // setSubmitting(false);
         })
         .catch(err => {
             console.log(err);

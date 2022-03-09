@@ -1,3 +1,6 @@
+/*
+-Функция, валидирующая данные, собранные с формы регистрации
+*/
 const validate = ({ isAuth, errors, values }) => {
     const rules = {
         email: (errors, value) => {

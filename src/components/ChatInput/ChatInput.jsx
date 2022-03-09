@@ -2,20 +2,34 @@ import React, { useState } from 'react';
 import Upload from 'rc-upload';
 import { AudioOutlined, SmileOutlined, CameraOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { Input, Button } from 'antd';
-
-import './ChatInput.scss';
+import { connect } from 'react-redux';
 import Picker from 'emoji-picker-react';
 
+import './ChatInput.scss';
+import messagesActions from './../../redux/actions/messages';
+import messagesAPI from '../../utils/api/messagesAPI';
 
-const ChatInput = () => {
+
+const ChatInput = ({ userData, currentDialogId }) => {
 
     const [input, setInput] = useState('');
     const [showEmoji, setShowEmoji] = useState(false);
 
     const onEmojiClick = (event, emojiObject) => {
-        console.log(emojiObject.emoji)
         setInput(input => input + emojiObject.emoji);
     };
+
+    const onKeyUp = (e, input) => {
+        if (e.keyCode == 13 && input !== '')
+            sendMessage(input, currentDialogId, userData._id);
+    }
+
+    const sendMessage = (text, dialogId, userId) => {
+        messagesAPI.send({text, dialogId, userId})
+        .then(data => console.log(data))
+        .catch(err => console.err(err));
+        setInput('');
+    }
 
     return (
         <div className="chat-input">
@@ -27,7 +41,13 @@ const ChatInput = () => {
             <div className="chat-input__smile-btn" onClick={() => setShowEmoji(!showEmoji)}>
                 <SmileOutlined />
             </div>
-            <Input onChange={e => setInput(e.target.value)} size ='large' placeholder="Введите текст сообщения..." value={input}/>
+            <Input 
+                onChange={e => setInput(e.target.value)} 
+                onKeyUp={e => onKeyUp(e, input)}
+                size ='large' 
+                placeholder="Введите текст сообщения..." 
+                value={input}
+                />
             <div className="chat-input__buttons">
                 <Upload
                     action={'/'}
@@ -38,10 +58,23 @@ const ChatInput = () => {
                 >
                     <CameraOutlined />
                 </Upload>
-                {input === '' ? <AudioOutlined /> : <Button type="primary" shape="circle" icon={<ArrowRightOutlined />} size={'20px'} />}
+                {input === '' ? <AudioOutlined /> : 
+                    <Button 
+                        type="primary" 
+                        shape="circle" 
+                        icon={<ArrowRightOutlined />} 
+                        size={'20px'} 
+                        onClick={() => sendMessage(input, currentDialogId, userData._id)}
+                        />}
             </div>
         </div>
     )
 }
 
-export default ChatInput;
+const mapStateToProps = (state) => ({
+    currentDialogId: state.dialogs.currentDialogId, 
+    userData: state.user.data,
+})
+
+export default connect(mapStateToProps, messagesActions)(ChatInput);
+

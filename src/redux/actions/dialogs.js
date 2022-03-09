@@ -16,6 +16,9 @@ const actions = {
         payload: data
     }),
 
+    onDialogClick: (data) => (dispatch) => {
+        dispatch(actions.setCurrentDialogId(data));
+    },
 
     fetchDialogs: (id) => (dispatch) => {
         dispatch(actions.setIsLoading(true));

@@ -1,3 +1,12 @@
+/*
+-Компонент отрисовывает форму логина
+-Валидация не происходит
+-При Submit отправляет запрос в backend
+-При 200 запросе получает данные пользователя и token
+-Производит dispatch данных пользователя в Redux store
+-Запоминает token в localStorage
+-Отображает нотификации при успешном или неуспешном логине
+*/
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Input } from 'antd';
@@ -11,6 +20,7 @@ import store from './../../redux/store';
 import userActions from './../../redux/actions/user';
 import userApi from './../../utils/api/user';
 import openNotification from '../../utils/helpers/openNotification';
+import axios from './../../core/axios';
 
 
 
@@ -18,18 +28,15 @@ import openNotification from '../../utils/helpers/openNotification';
 
 
 
-const LoginForm = (props) => {
-
-    const {
-        values,
-        touched,
-        errors,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-    } = props;
+const LoginForm = ({
+    values,
+    touched,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+}) => {
     return (
-        
         <div>
             <div className='auth__top'>
                 <h2>Войти в аккаунт</h2>
@@ -105,9 +112,11 @@ const LoginFormWithFormik = withFormik({
     handleSubmit: (values, { setSubmitting }) => {
         userApi.login(values)
         .then(data => {
-            store.dispatch(userActions.setUserData(data.data));
             window.localStorage.token = data.data.accessToken;
-            //setSubmitting(false);
+            window.localStorage.user = JSON.stringify(data.data.user);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${data.data.accessToken}`;
+            store.dispatch(userActions.setUserData(data.data));
+            // setSubmitting(false);
             openNotification('success', 'Вы успешно вошли!');
         })
         .catch(err => {

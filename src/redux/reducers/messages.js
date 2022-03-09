@@ -1,6 +1,6 @@
 const initialState = {
     items: [],
-    isLoading: false
+    isLoading: false,
 }
 
 const messagesReducer = (state = initialState, action) => {
@@ -11,6 +11,11 @@ const messagesReducer = (state = initialState, action) => {
                 items: action.payload,
                 isLoading: false
             };
+        case 'MESSAGES:ADD_ITEM':
+            return {
+                ...state,
+                items: [...state.items, action.payload]
+            }
         case 'MESSAGES:SET_IS_LOADING':
             return {
                 ...state,

@@ -1,7 +1,7 @@
 const initialState = {
-    data: null,
-    token: null,
-    isAuth: false,
+    data: window.localStorage.user === undefined ? null : JSON.parse(window.localStorage.user),
+    token: 'window.localStorage.token || null',
+    isAuth: window.localStorage.user === undefined || window.localStorage.token === undefined ? false : true,
 }
 
 const userReducer = (state = initialState, action) => {

@@ -1,54 +1,57 @@
-import React, { useEffect, useRef, useState } from 'react'
-import './Message.scss';
-
+/*
+-Компонент получает данные по сообщению и отрисовывает его
+*/
+import React, { useEffect, useRef, useState } from 'react';
 import { formatDistanceToNow } from 'date-fns/esm';
 import ru from 'date-fns/locale/ru/index.js';
 import classNames from 'classnames';
+
+import './Message.scss';
 import IconReaded from '../IconReaded/IconReaded';
 import audioIcon from '../../assets/img/audio.svg';
 import playIcon from '../../assets/img/play.svg';
 import pauseIcon from '../../assets/img/pause.svg';
 import convertCurrentTime from '../../utils/helpers/convertCurrentTime';
+import Avatar from '../Avatar/Avatar';
 
 
-const Message = (props) => {
+const Message = ({text, dialogId, user, createdAt, userData, isMe, isReaded, isTyping, attachments, audio}) => {
     return (
         <div className={classNames('message',
             {
-                'message--isme': props.isMe,
-                'message--typing': props.isTyping,
-                'message--image': props.attachments && props.attachments.length === 1,
-                'message--audio': props.audio,
+                'message--isme': isMe,
+                'message--typing': isTyping,
+                'message--image': attachments && attachments.length === 1,
+                'message--audio': audio,
             })}>
             <div className="message__content">
-
                 <div className="message__avatar">
-                    <img src={props?.avatar || ''} alt={`Avatar ${props.user?.fullname || 'unknown'}`} />
+                    <Avatar user = {isMe ? userData : user} id = {isMe ? userData._id : dialogId}/>
                 </div>
                 <div className="message__info">
-                    {(props.audio || props.text || props.isTyping) &&
+                    {(audio || text || isTyping) &&
                         <div className="message__bubble">
-                            {props.text && <p className="message__text">{props.text}</p>}
-                            {props.isTyping &&
+                            {text && <p className="message__text">{text}</p>}
+                            {isTyping &&
                                 <div className="message__typing">
                                     <span></span>
                                     <span></span>
                                     <span></span>
                                 </div>
                             }
-                            {props.audio && <MessageAudio audio={props.audio} />}
+                            {audio && <MessageAudio audio={audio} />}
                         </div>}
 
                     <div className="message__attachments">
-                        {props.attachments && props.attachments.map(item => (
+                        {attachments && attachments.map(item => (
                             <div className="message__attachment-item">
                                 <img src={item.url} alt='Attachment' />
                             </div>
                         ))}
                     </div>
-                    {props.date && <span className="message__date">{formatDistanceToNow(new Date(props.date), { addSuffix: true, locale: ru })}</span>}
+                    {createdAt && <span className="message__date">{formatDistanceToNow(new Date(createdAt), { addSuffix: true, locale: ru })}</span>}
                 </div>
-                <IconReaded isMe={props.isMe} isReaded={props.isReaded} />
+                <IconReaded isMe={isMe} isReaded={isReaded} />
             </div>
         </div>
     )
@@ -108,3 +111,34 @@ const MessageAudio = ({ audio }) => {
 
 
 export default Message;
+
+/*
+EXAMPLPE props
+{
+    "text": "Hello from Bonart",
+    "dialogId": "6210b06364377aef56b6c7a9",
+    "user": {
+        "_id": "61b212b8f122e4c0500fd9bd",
+        "email": "leo@yandex.com",
+        "fullname": "Leo Bonart",
+        "password": "qwerty",
+        "confirmed": false,
+        "createdAt": "2021-12-09T14:29:12.202Z",
+        "updatedAt": "2021-12-09T14:29:12.202Z",
+        "__v": 0
+    },
+    "createdAt": "2022-02-22T13:40:53.336Z",
+    "userData": {
+        "_id": "61bdcee52c0f13ebd1b63d1c",
+        "email": "test@yandex.com",
+        "fullname": "Test",
+        "password": "$2b$10$zmaI22GQnHVhYN.7pJByC.mil5TAQVCQo0BsoZ7s44mEQBdU8HHOS",
+        "confirmed": false,
+        "createdAt": "2021-12-18T12:07:01.503Z",
+        "updatedAt": "2022-02-22T13:54:19.995Z",
+        "__v": 0,
+        "last_seen": "Tue Feb 22 2022 16:54:19 GMT+0300 (Москва, стандартное время)"
+    },
+    "isMe": false
+}
+*/
