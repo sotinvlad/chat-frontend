@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Upload from 'rc-upload';
 import { AudioOutlined, SmileOutlined, CameraOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import { Input, Button } from 'antd';
+import { Input, Button, Popover } from 'antd';
 import { connect } from 'react-redux';
 import Picker from 'emoji-picker-react';
 
@@ -25,29 +25,35 @@ const ChatInput = ({ userData, currentDialogId }) => {
     }
 
     const sendMessage = (text, dialogId, userId) => {
-        messagesAPI.send({text, dialogId, userId})
-        .then(data => console.log(data))
-        .catch(err => console.err(err));
+        messagesAPI.send({ text, dialogId, userId })
+            .then(data => console.log(data))
+            .catch(err => console.err(err));
         setInput('');
     }
 
+    const content = (
+            <div className="chat-input__emoji">
+                <Picker onEmojiClick={onEmojiClick} />
+            </div>
+    )
+
     return (
         <div className="chat-input">
-            {showEmoji && 
-                <div className="chat-input__emoji">
-                    <Picker onEmojiClick={onEmojiClick}/>
-                </div>
-            }
+
+            <Popover content={content}>
             <div className="chat-input__smile-btn" onClick={() => setShowEmoji(!showEmoji)}>
                 <SmileOutlined />
             </div>
-            <Input 
-                onChange={e => setInput(e.target.value)} 
+
+            </Popover>
+
+            <Input
+                onChange={e => setInput(e.target.value)}
                 onKeyUp={e => onKeyUp(e, input)}
-                size ='large' 
-                placeholder="Введите текст сообщения..." 
+                size='large'
+                placeholder="Введите текст сообщения..."
                 value={input}
-                />
+            />
             <div className="chat-input__buttons">
                 <Upload
                     action={'/'}
@@ -58,21 +64,21 @@ const ChatInput = ({ userData, currentDialogId }) => {
                 >
                     <CameraOutlined />
                 </Upload>
-                {input === '' ? <AudioOutlined /> : 
-                    <Button 
-                        type="primary" 
-                        shape="circle" 
-                        icon={<ArrowRightOutlined />} 
-                        size={'20px'} 
+                {input === '' ? <AudioOutlined /> :
+                    <Button
+                        type="primary"
+                        shape="circle"
+                        icon={<ArrowRightOutlined />}
+                        size={'20px'}
                         onClick={() => sendMessage(input, currentDialogId, userData._id)}
-                        />}
+                    />}
             </div>
         </div>
     )
 }
 
 const mapStateToProps = (state) => ({
-    currentDialogId: state.dialogs.currentDialogId, 
+    currentDialogId: state.dialogs.currentDialogId,
     userData: state.user.data,
 })
 

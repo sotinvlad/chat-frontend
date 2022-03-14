@@ -14,7 +14,7 @@ import filterDialogs from '../utils/helpers/filterDialogs';
 import dialogsActions from './../redux/actions/dialogs';
 import socket from './../core/socket';
 
-const Dialogs = ({items, userData, isLoading, currentDialogId, fetchDialogs, onDialogClick}) => {
+const Dialogs = ({items, userData, isLoading, currentDialogId, fetchDialogs, onDialogClick, updateDialog}) => {
     const [inputValue, setInputValue] = useState('');
     const [filtered, setFiltered] = useState(items);
     const handleChange = (e) => {
@@ -27,8 +27,12 @@ const Dialogs = ({items, userData, isLoading, currentDialogId, fetchDialogs, onD
             socket.connect();
             fetchDialogs(userData._id)
         })
+        socket.on('SERVER:UPDATE_DIALOG', dialog => {
+            console.log('SERVER:UPDATE_DIALOG', dialog)
+            updateDialog(dialog);
+        })
         return () => {
-            socket.off('SERVER:DIALOG_CREATED', () => fetchDialogs(userData._id))
+            socket.removeAllListeners('SERVER:DIALOG_CREATED');
         }
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 

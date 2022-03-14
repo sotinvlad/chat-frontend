@@ -11,26 +11,28 @@ import messagesActions from './../redux/actions/messages';
 import socket from './../core/socket';
 
 
-const Messages = ({items, currentDialogId, userData, isLoading, fetchMessages, addMessage}) => {
+const Messages = ({items, currentDialogId, userData, isLoading, fetchMessages, addMessage, deleteMessage, updateMessage}) => {
     const messagesBlock = useRef();
     useEffect(() => {
-        socket.off('SERVER:SEND_MESSAGE', data => {
-            if (data.dialogId === currentDialogId){
-                addMessage(data);
-            }
-        });
-        socket.on('SERVER:SEND_MESSAGE', data => {
-            if (data.dialogId === currentDialogId){
-                console.log('addMessage', data)
-                addMessage(data);
-            }
-        });
-        return () => {
-            socket.off('SERVER:SEND_MESSAGE', data => {
+        if (currentDialogId){            
+            socket.on('SERVER:SEND_MESSAGE', data => {
                 if (data.dialogId === currentDialogId){
                     addMessage(data);
                 }
             });
+            socket.on('SERVER:MESSAGE_UPDATE', data => {
+                console.log('SERVER:MESSAGE_UPDATE', data)
+                updateMessage(data._id, data.text);
+            });
+            socket.on('SERVER:MESSAGE_DELETE', _id => {
+                console.log('SERVER:MESSAGE_DELETE', _id)
+                deleteMessage(_id);
+            })
+        }
+        return () => {
+            socket.removeAllListeners('SERVER:SEND_MESSAGE');
+            socket.removeAllListeners('SERVER:MESSAGE_UPDATE');
+            socket.removeAllListeners('SERVER:MESSAGE_DELETE');
         }
     }, [currentDialogId]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -63,7 +65,7 @@ const mapStateToProps = (state) => ({
     isLoading: state.messages.isLoading,
 })
 
-export default connect(mapStateToProps, { ...messagesActions})(Messages);
+export default connect(mapStateToProps, messagesActions)(Messages);
 
 /*
 EXAMPLE items:

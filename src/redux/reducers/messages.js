@@ -15,7 +15,20 @@ const messagesReducer = (state = initialState, action) => {
             return {
                 ...state,
                 items: [...state.items, action.payload]
-            }
+            };
+        case 'MESSAGES:DELETE_ITEM':
+            console.log(action,state.items.filter(m => m._id !== action.payload))
+            return {
+                ...state,
+                items: state.items.filter(m => m._id !== action.payload)
+            };
+        case 'MESSAGES:UPDATE_ITEM':
+            state.items.find(i => i._id === action.payload.id).text = action.payload.text;
+            const newItems = [...state.items];
+            return {
+                ...state,
+                items: newItems,
+            };
         case 'MESSAGES:SET_IS_LOADING':
             return {
                 ...state,

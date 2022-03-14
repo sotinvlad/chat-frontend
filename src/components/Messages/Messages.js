@@ -23,7 +23,8 @@ const Messages = ({items, isLoading, currentDialogId, userData, messagesBlock}) 
                     <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
                 :   items.length ? 
                         items.map(item => <Message
-                            key = {item._id}  
+                            key = {item._id}
+                            _id = {item._id}  
                             {...item} 
                             isMe = {userData._id === item.user._id}
                             userData = {userData}

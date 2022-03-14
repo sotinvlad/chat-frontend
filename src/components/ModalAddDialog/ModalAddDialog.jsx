@@ -37,7 +37,6 @@ const ModalAddDialog = ({ visible, userData, toggleModal }) => {
     const handleChange = value => {
         setValue(value);
     };
-    console.log('value',value)
     return (
         <Modal
             title="Создание диалога"

@@ -5,6 +5,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { formatDistanceToNow } from 'date-fns/esm';
 import ru from 'date-fns/locale/ru/index.js';
 import classNames from 'classnames';
+import { Popover, Button } from 'antd';
+import { EllipsisOutlined } from '@ant-design/icons';
 
 import './Message.scss';
 import IconReaded from '../IconReaded/IconReaded';
@@ -13,9 +15,33 @@ import playIcon from '../../assets/img/play.svg';
 import pauseIcon from '../../assets/img/pause.svg';
 import convertCurrentTime from '../../utils/helpers/convertCurrentTime';
 import Avatar from '../Avatar/Avatar';
+import messagesAPI from '../../utils/api/messagesAPI';
 
 
-const Message = ({text, dialogId, user, createdAt, userData, isMe, isReaded, isTyping, attachments, audio}) => {
+const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReaded, isTyping, attachments, audio }) => {
+
+    const [popupVisible, setPopupVisible] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [messageValue, setMessageValue] = useState();
+
+    const onDeleteClick = (id) => {
+        messagesAPI.delete(id)
+        setPopupVisible(e => !e)
+    }
+
+    const onEditClick = () => {
+        setMessageValue(text);
+        setIsEditing(true);
+        setPopupVisible(e => !e)
+    }
+
+    const onKeyUp = (e) => {
+        if (e.keyCode == 13 && messageValue !== ''){
+            messagesAPI.update({ id: _id, text: messageValue });
+            setIsEditing(false);
+        }
+    }
+
     return (
         <div className={classNames('message',
             {
@@ -24,14 +50,40 @@ const Message = ({text, dialogId, user, createdAt, userData, isMe, isReaded, isT
                 'message--image': attachments && attachments.length === 1,
                 'message--audio': audio,
             })}>
-            <div className="message__content">
+            <div className="message__content">  
                 <div className="message__avatar">
-                    <Avatar user = {isMe ? userData : user} id = {isMe ? userData._id : dialogId}/>
+                    <Avatar user={isMe ? userData : user} id={isMe ? userData._id : dialogId} />
+                </div>
+                <div className="message__popover">
+                {isMe ? <Popover
+                        content={
+                            <div className="message__popoverItems">
+                                <Button onClick={() => onEditClick()}>Редактировать</Button>
+                                <Button onClick={() => onDeleteClick(_id)}>Удалить</Button>
+                            </div>
+                        }
+                        trigger="click"
+                        visible={popupVisible}
+                        onVisibleChange={() => setPopupVisible(s => !s)}
+                    >
+                    <EllipsisOutlined />
+                </Popover> : null}
                 </div>
                 <div className="message__info">
                     {(audio || text || isTyping) &&
                         <div className="message__bubble">
-                            {text && <p className="message__text">{text}</p>}
+                            {
+                                text && isEditing ? 
+                                <input 
+                                    type='text'
+                                    className="message__text" 
+                                    onKeyUp={e => onKeyUp(e)} 
+                                    value={messageValue} 
+                                    onChange={e => setMessageValue(e.target.value)}></input>
+                                
+                                : 
+                                <p className="message__text">{text}</p>
+                            }
                             {isTyping &&
                                 <div className="message__typing">
                                     <span></span>
@@ -40,8 +92,8 @@ const Message = ({text, dialogId, user, createdAt, userData, isMe, isReaded, isT
                                 </div>
                             }
                             {audio && <MessageAudio audio={audio} />}
-                        </div>}
-
+                        </div>
+                    }
                     <div className="message__attachments">
                         {attachments && attachments.map(item => (
                             <div className="message__attachment-item">
@@ -52,6 +104,7 @@ const Message = ({text, dialogId, user, createdAt, userData, isMe, isReaded, isT
                     {createdAt && <span className="message__date">{formatDistanceToNow(new Date(createdAt), { addSuffix: true, locale: ru })}</span>}
                 </div>
                 <IconReaded isMe={isMe} isReaded={isReaded} />
+                
             </div>
         </div>
     )

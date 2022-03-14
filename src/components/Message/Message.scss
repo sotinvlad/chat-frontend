@@ -180,6 +180,29 @@
             }
         }
     }
+
+    &:hover{
+        #{$self}__popover{
+            display: block;
+        }
+    }
+
+    &__popover{
+        display: none;
+        position: absolute;
+        right: 47px;
+        span{
+            transform: rotate(90deg);   
+        }
+    }
+
+    &__popoverItems{
+        display: flex;
+        flex-direction: column;
+        button{
+            margin: 2px;
+        }
+    }
 }
 
 @keyframes typingAnimation{

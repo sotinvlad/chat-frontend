@@ -16,6 +16,16 @@ const actions = {
         payload: data
     }),
 
+    deleteMessage: (_id) => ({
+        type: 'MESSAGES:DELETE_ITEM',
+        payload: _id
+    }),
+
+    updateMessage: (id, text) => ({
+        type: 'MESSAGES:UPDATE_ITEM',
+        payload: { id, text }
+    }),
+
     fetchMessages: (id) => (dispatch) => {
         dispatch(actions.setIsLoading(true));
         messagesAPI.getAllByDialogId(id).then(data => {

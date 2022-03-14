@@ -16,6 +16,11 @@ const actions = {
         payload: data
     }),
 
+    updateDialog: (dialog) => ({
+        type: 'DIALOGS:UPDATE_DIALOG',
+        payload: dialog
+    }),
+
     onDialogClick: (data) => (dispatch) => {
         dispatch(actions.setCurrentDialogId(data));
     },
