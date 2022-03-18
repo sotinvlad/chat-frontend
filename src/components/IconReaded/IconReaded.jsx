@@ -3,7 +3,7 @@ import readed from './../../assets/img/readed.svg'
 import noreaded from './../../assets/img/noreaded.svg'
 
 const IconReaded = (props) => 
-    props.isMe ? props.isReaded  ? (
+    props.isMe ? props.isReaded === true  ? (
         <img 
             src={readed} 
             className='message__readed'

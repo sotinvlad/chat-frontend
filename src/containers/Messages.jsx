@@ -18,11 +18,14 @@ const Messages = ({items, currentDialogId, userData, isLoading, fetchMessages, a
             socket.on('SERVER:SEND_MESSAGE', data => {
                 if (data.dialogId === currentDialogId){
                     addMessage(data);
+                    if (data.user._id !== userData._id){
+                        socket.emit('CLIENT:MESSAGE_IS_READED', data._id)
+                    }
                 }
             });
             socket.on('SERVER:MESSAGE_UPDATE', data => {
                 console.log('SERVER:MESSAGE_UPDATE', data)
-                updateMessage(data._id, data.text);
+                updateMessage(data._id, data.text, data.isReaded);
             });
             socket.on('SERVER:MESSAGE_DELETE', _id => {
                 console.log('SERVER:MESSAGE_DELETE', _id)

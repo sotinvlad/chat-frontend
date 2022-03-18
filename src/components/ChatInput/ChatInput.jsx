@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Upload from 'rc-upload';
-import { AudioOutlined, SmileOutlined, CameraOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import { AudioOutlined, SmileOutlined, PaperClipOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { Input, Button, Popover } from 'antd';
 import { connect } from 'react-redux';
 import Picker from 'emoji-picker-react';
@@ -62,7 +62,7 @@ const ChatInput = ({ userData, currentDialogId }) => {
                     onSuccess={(ret) => console.log('onSuccess', ret)}
                     onError={(err) => console.log('onError', err)}
                 >
-                    <CameraOutlined />
+                    <PaperClipOutlined />
                 </Upload>
                 {input === '' ? <AudioOutlined /> :
                     <Button

@@ -50,9 +50,9 @@ const Home = ({ currentDialogId, userData }) => {
         socket.on('SERVER:UPDATE_STATUS', () => {
             getStatus(dialogId);
         })
-        return socket.off('SERVER:UPDATE_STATUS', () => {
-            getStatus(dialogId);
-        })
+        return () => {
+            socket.removeAllListeners('SERVER:UPDATE_STATUS');
+        }
     }, []);
 
     return (
@@ -74,18 +74,22 @@ const Home = ({ currentDialogId, userData }) => {
                 <div className="chat__dialog">
                     <div className="chat__dialog-header">
                         <div className="chat__dialog-header-block"></div>
+                        {currentDialogId ?
                         <div className="chat__dialog-header-status">
                             <span className="chat__dialog-header-status-fullname" id='interlocutorName'></span>
-                            <span className="status status--online" id='interlocutorStatus'></span>
-                        </div>
+                            <span className="status status--online" id='interlocutorStatus'></span> 
+                        </div>: null
+                        }
                         <EllipsisOutlined style={{ fontSize: '26px' }} onClick={() => {window.localStorage.removeItem('user')}}/>
                     </div>
                     <div className="chat__dialog-messages">
                         <Messages />
                     </div>
-                    <div className="chat__dialog-input">
-                        <ChatInput />
-                    </div>
+                    {currentDialogId ? 
+                        <div className="chat__dialog-input">
+                            <ChatInput />
+                        </div> : null
+                    }
                 </div>
             </div>
         </section>

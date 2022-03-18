@@ -23,7 +23,11 @@ const messagesReducer = (state = initialState, action) => {
                 items: state.items.filter(m => m._id !== action.payload)
             };
         case 'MESSAGES:UPDATE_ITEM':
-            state.items.find(i => i._id === action.payload.id).text = action.payload.text;
+            let itemToUpdate = state.items.find(i => i._id === action.payload.id);
+            if (itemToUpdate !== undefined){
+                itemToUpdate.text = action.payload.text;
+                itemToUpdate.isReaded = action.payload.isReaded;
+            }
             const newItems = [...state.items];
             return {
                 ...state,

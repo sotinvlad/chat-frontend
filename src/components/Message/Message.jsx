@@ -104,7 +104,6 @@ const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReade
                     {createdAt && <span className="message__date">{formatDistanceToNow(new Date(createdAt), { addSuffix: true, locale: ru })}</span>}
                 </div>
                 <IconReaded isMe={isMe} isReaded={isReaded} />
-                
             </div>
         </div>
     )
