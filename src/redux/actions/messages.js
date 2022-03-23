@@ -21,9 +21,9 @@ const actions = {
         payload: _id
     }),
 
-    updateMessage: (id, text, isReaded) => ({
+    updateMessage: (id, text, isReaded, attachments) => ({
         type: 'MESSAGES:UPDATE_ITEM',
-        payload: { id, text, isReaded }
+        payload: { id, text, isReaded, attachments }
     }),
 
     fetchMessages: (id) => (dispatch) => {

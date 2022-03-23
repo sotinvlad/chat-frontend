@@ -16,6 +16,9 @@ import pauseIcon from '../../assets/img/pause.svg';
 import convertCurrentTime from '../../utils/helpers/convertCurrentTime';
 import Avatar from '../Avatar/Avatar';
 import messagesAPI from '../../utils/api/messagesAPI';
+import axios from './../../core/axios';
+import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReaded, isTyping, attachments, audio }) => {
@@ -42,6 +45,21 @@ const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReade
         }
     }
 
+    // const downloadFile = (filename) => {
+    //     axios.get(`http://localhost:5000/file/${filename}`)
+    //     .then(res => {
+    //         const contentDisposition = res.headers['content-disposition'];
+    //         const fileName = contentDisposition.split(';')[1].split('=')[1];
+    //         const url = window.URL.createObjectURL(new Blob([res.data]));
+    //         const link = document.createElement('a');
+    //         link.href = url;
+    //         console.log(res);
+    //         link.setAttribute('download', `s.png`);
+    //         document.body.appendChild(link);
+    //         link.click();
+    //     })
+    //     }
+
     return (
         <div className={classNames('message',
             {
@@ -50,6 +68,7 @@ const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReade
                 'message--image': attachments && attachments.length === 1,
                 'message--audio': audio,
             })}>
+            <div className="message__all">
             <div className="message__content">  
                 <div className="message__avatar">
                     <Avatar user={isMe ? userData : user} id={isMe ? userData._id : dialogId} />
@@ -94,17 +113,20 @@ const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReade
                             {audio && <MessageAudio audio={audio} />}
                         </div>
                     }
-                    <div className="message__attachments">
-                        {attachments && attachments.map(item => (
-                            <div className="message__attachment-item">
-                                <img src={item.url} alt='Attachment' />
-                            </div>
-                        ))}
-                    </div>
+                    
                     {createdAt && <span className="message__date">{formatDistanceToNow(new Date(createdAt), { addSuffix: true, locale: ru })}</span>}
                 </div>
                 <IconReaded isMe={isMe} isReaded={isReaded} />
             </div>
+                <div className="message__attachments">
+                    {attachments && attachments.map(item => (
+                        <div className="message__attachment-item">
+                            <a href={`http://localhost:5000/file/${item}`} target="_blank" rel="noopener noreferrer" > {item} </a>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            
         </div>
     )
 }

@@ -27,6 +27,7 @@ const messagesReducer = (state = initialState, action) => {
             if (itemToUpdate !== undefined){
                 itemToUpdate.text = action.payload.text;
                 itemToUpdate.isReaded = action.payload.isReaded;
+                itemToUpdate.attachments = action.payload.attachments;
             }
             const newItems = [...state.items];
             return {

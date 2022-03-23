@@ -85,7 +85,10 @@
 
     &__attachments {
         display: flex;
+        flex-direction: column;
+        align-items: flex-end;
         margin-bottom: 5px;
+        padding-right: 50px;
         img {
             width: 45px;
             height: 45px;
@@ -104,6 +107,7 @@
 
     &__attachment-item {
         margin-right: 5px;
+        margin-bottom: 5px;
         cursor: pointer;
     }
 
