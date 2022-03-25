@@ -16,14 +16,16 @@ import dialogsAPI from '../../utils/api/dialogsAPI';
 import getUserStatus from '../../utils/helpers/getUserStatus';
 import socket from '../../core/socket';
 import ModalAddDialog from '../../components/ModalAddDialog/ModalAddDialog';
+import dialogsActions from './../../redux/actions/dialogs'
 
 let dialogId = '';
 
-const Home = ({ currentDialogId, userData }) => {
+const Home = ({ currentDialogId, userData, updateDialog }) => {
     dialogId = currentDialogId;
     const getStatus = (id) => {
         dialogsAPI.getDialog(id)
         .then(data => {
+            updateDialog(data.data);
             const [status, name] = getUserStatus(data.data, userData);
             let interlocutorName = document.getElementById('interlocutorName');
             let interlocutorStatus = document.getElementById('interlocutorStatus');
@@ -101,4 +103,4 @@ const mapStateToProps = (state) => ({
     userData: state.user.data,
 })
 
-export default connect(mapStateToProps, {})(Home);
+export default connect(mapStateToProps, { ...dialogsActions })(Home);

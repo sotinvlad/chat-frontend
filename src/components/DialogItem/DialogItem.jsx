@@ -9,7 +9,7 @@ import './DialogItem.scss';
 import IconReaded from '../IconReaded/IconReaded';
 import Avatar from '../Avatar/Avatar';
 import getMessageTime from '../../utils/helpers/getMessageTime';
-
+import getNameOfFile from '../../utils/helpers/getNameOfFile';
 
 
 const DialogItem = ({id, user, lastMessage, isMe, isReaded, createdAt, currentDialogId, onDialogClick}) => {
@@ -35,7 +35,7 @@ const DialogItem = ({id, user, lastMessage, isMe, isReaded, createdAt, currentDi
                 </div>
                 <div className="dialogs__item-info-bottom">
                     <div className='dialogs__item-info-bottom-text'>
-                        {lastMessage.text}
+                        {lastMessage.text !== '' ? lastMessage.text : lastMessage.attachments.map(a => getNameOfFile(a)).join(';')}
                     </div>
                     {isMe ?
                             <IconReaded isMe={isMe} isReaded={isReaded} />

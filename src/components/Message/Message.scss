@@ -86,9 +86,9 @@
     &__attachments {
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
+        align-items: flex-start;
         margin-bottom: 5px;
-        padding-right: 50px;
+        padding-left: 60px;
         img {
             width: 45px;
             height: 45px;
@@ -152,6 +152,10 @@
         #{$self}__readed {
             padding: 10px;
             margin-bottom: -20px;
+        }
+        #{$self}__attachments {
+            align-items: flex-end;
+            padding-right: 60px;
         }
     }
 

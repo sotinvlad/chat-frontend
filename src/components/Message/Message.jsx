@@ -19,6 +19,7 @@ import messagesAPI from '../../utils/api/messagesAPI';
 import axios from './../../core/axios';
 import { Redirect } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import getNameOfFile from '../../utils/helpers/getNameOfFile';
 
 
 const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReaded, isTyping, attachments, audio }) => {
@@ -39,7 +40,7 @@ const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReade
     }
 
     const onKeyUp = (e) => {
-        if (e.keyCode == 13 && messageValue !== ''){
+        if (e.keyCode == 13 && messageValue !== '') {
             messagesAPI.update({ id: _id, text: messageValue });
             setIsEditing(false);
         }
@@ -69,64 +70,75 @@ const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReade
                 'message--audio': audio,
             })}>
             <div className="message__all">
-            <div className="message__content">  
-                <div className="message__avatar">
-                    <Avatar user={isMe ? userData : user} id={isMe ? userData._id : dialogId} />
-                </div>
-                <div className="message__popover">
-                {isMe ? <Popover
-                        content={
-                            <div className="message__popoverItems">
-                                <Button onClick={() => onEditClick()}>Редактировать</Button>
-                                <Button onClick={() => onDeleteClick(_id)}>Удалить</Button>
-                            </div>
-                        }
-                        trigger="click"
-                        visible={popupVisible}
-                        onVisibleChange={() => setPopupVisible(s => !s)}
-                    >
-                    <EllipsisOutlined />
-                </Popover> : null}
-                </div>
-                <div className="message__info">
-                    {(audio || text || isTyping) &&
-                        <div className="message__bubble">
-                            {
-                                text && isEditing ? 
-                                <input 
-                                    type='text'
-                                    className="message__text" 
-                                    onKeyUp={e => onKeyUp(e)} 
-                                    value={messageValue} 
-                                    onChange={e => setMessageValue(e.target.value)}></input>
-                                
-                                : 
-                                <p className="message__text">{text}</p>
-                            }
-                            {isTyping &&
-                                <div className="message__typing">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
+                <div className="message__content">
+                    <div className="message__avatar">
+                        <Avatar user={isMe ? userData : user} id={isMe ? userData._id : dialogId} />
+                    </div>
+                    <div className="message__popover">
+                        {isMe ? <Popover
+                            content={
+                                <div className="message__popoverItems">
+                                    <Button onClick={() => onEditClick()}>Редактировать</Button>
+                                    <Button onClick={() => onDeleteClick(_id)}>Удалить</Button>
                                 </div>
                             }
-                            {audio && <MessageAudio audio={audio} />}
-                        </div>
-                    }
-                    
-                    {createdAt && <span className="message__date">{formatDistanceToNow(new Date(createdAt), { addSuffix: true, locale: ru })}</span>}
+                            trigger="click"
+                            visible={popupVisible}
+                            onVisibleChange={() => setPopupVisible(s => !s)}
+                        >
+                            <EllipsisOutlined />
+                        </Popover> : null}
+                    </div>
+                    <div className="message__info">
+                        {(audio || text || isTyping) &&
+                            <div className="message__bubble">
+                                {
+                                    text && isEditing ?
+                                        <input
+                                            type='text'
+                                            className="message__text"
+                                            onKeyUp={e => onKeyUp(e)}
+                                            value={messageValue}
+                                            onChange={e => setMessageValue(e.target.value)}></input>
+
+                                        :
+                                        <p className="message__text">{text}</p>
+                                }
+                                {isTyping &&
+                                    <div className="message__typing">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                }
+                                {audio && <MessageAudio audio={audio} />}
+                            </div>
+                        }
+                        {text === '' &&
+                            <div className="message__attachments" style={{"padding": "0"}}>
+                                {attachments && attachments.map(item => (
+                                    <div className="message__attachment-item" key={item}>
+                                        <a href={`http://localhost:5000/file/${item}`} target="_blank" rel="noopener noreferrer" > {getNameOfFile(item)} </a>
+                                    </div>
+                                ))}
+                            </div>
+                        }
+
+                        {createdAt && <span className="message__date">{formatDistanceToNow(new Date(createdAt), { addSuffix: true, locale: ru })}</span>}
+                    </div>
+                    <IconReaded isMe={isMe} isReaded={isReaded} />
                 </div>
-                <IconReaded isMe={isMe} isReaded={isReaded} />
+                {text !== '' &&
+                    <div className="message__attachments">
+                        {attachments && attachments.map(item => (
+                            <div className="message__attachment-item" key={item}>
+                                <a href={`http://localhost:5000/file/${item}`} target="_blank" rel="noopener noreferrer" > {getNameOfFile(item)} </a>
+                            </div>
+                        ))}
+                    </div>
+                }
             </div>
-                <div className="message__attachments">
-                    {attachments && attachments.map(item => (
-                        <div className="message__attachment-item">
-                            <a href={`http://localhost:5000/file/${item}`} target="_blank" rel="noopener noreferrer" > {item} </a>
-                        </div>
-                    ))}
-                </div>
-            </div>
-            
+
         </div>
     )
 }
