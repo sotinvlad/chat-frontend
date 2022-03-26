@@ -8,10 +8,9 @@ import { connect } from 'react-redux';
 
 import BaseMessages from '../components/Messages/Messages';
 import messagesActions from './../redux/actions/messages';
-import socket from './../core/socket';
 
 
-const Messages = ({items, currentDialogId, userData, isLoading, fetchMessages, addMessage, deleteMessage, updateMessage}) => {
+const Messages = ({items, currentDialogId, userData, isLoading, fetchMessages, addMessage, deleteMessage, updateMessage, socket}) => {
     const messagesBlock = useRef();
     useEffect(() => {
         if (currentDialogId){            
@@ -66,6 +65,7 @@ const mapStateToProps = (state) => ({
     currentDialogId: state.dialogs.currentDialogId,
     userData: state.user.data,
     isLoading: state.messages.isLoading,
+    socket: state.user.socket,
 })
 
 export default connect(mapStateToProps, messagesActions)(Messages);

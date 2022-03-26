@@ -1,7 +1,12 @@
+import { io } from "socket.io-client";
+
 const initialState = {
     data: window.localStorage.user === undefined ? null : JSON.parse(window.localStorage.user),
     token: 'window.localStorage.token || null',
     isAuth: window.localStorage.user === undefined || window.localStorage.token === undefined ? false : true,
+    socket: io.connect('http://localhost:5000', {
+        auth: { token: window.localStorage.token }
+      }),
 }
 
 const userReducer = (state = initialState, action) => {
@@ -12,7 +17,10 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 data: action.payload.user,
                 token: action.payload.accessToken,
-                isAuth: true
+                isAuth: true,
+                socket: io.connect('http://localhost:5000', {
+                    auth: { token: window.localStorage.token }
+                  })
             };
         case 'USER:SET_ISAUTH':
             return {

@@ -12,36 +12,38 @@ import getMessageTime from '../../utils/helpers/getMessageTime';
 import getNameOfFile from '../../utils/helpers/getNameOfFile';
 
 
-const DialogItem = ({id, user, lastMessage, isMe, isReaded, createdAt, currentDialogId, onDialogClick}) => {
+const DialogItem = ({id, user, lastMessage, isMe, isReaded, currentDialogId, onDialogClick, unreadedMessages}) => {
+    const dataOfUser = user.user;
+    console.log({id, user, lastMessage, isMe, isReaded, currentDialogId, onDialogClick, unreadedMessages})
     return (
         <div 
             className={classNames(
                 'dialogs__item', 
                 {
-                    'dialogs__item--online' : differenceInMinutes(new Date(), new Date(user.last_seen)) < 5, 
+                    'dialogs__item--online' : differenceInMinutes(new Date(), new Date(dataOfUser.last_seen)) < 5, 
                     'dialogs__item--active' : currentDialogId === id
                 })}
             onClick={() => onDialogClick(id)}
             >
             <div className="dialogs__item-avatar">
-                <Avatar user={user} id={id} />
+                <Avatar user={dataOfUser} id={id} />
             </div>
             <div className="dialogs__item-info">
                 <div className="dialogs__item-info-top">
-                    <span className='dialogs__item-info-top-username'>{user.fullname}</span>
+                    <span className='dialogs__item-info-top-username'>{dataOfUser.fullname}</span>
                     <span className='dialogs__item-info-top-date'>
                         {lastMessage === undefined ? getMessageTime(lastMessage.createdAt) : null} 
                     </span>
                 </div>
                 <div className="dialogs__item-info-bottom">
                     <div className='dialogs__item-info-bottom-text'>
-                        {lastMessage.text !== '' ? lastMessage.text : lastMessage.attachments.map(a => getNameOfFile(a)).join(';')}
+                        {lastMessage !== 'Сообщений нет...' ? lastMessage.text !== '' ? lastMessage.text : lastMessage.attachments.map(a => getNameOfFile(a)).join(';') : 'Сообщений нет...'}
                     </div>
                     {isMe ?
                             <IconReaded isMe={isMe} isReaded={isReaded} />
-                            : user.unreaded > 0 ?
+                            : unreadedMessages > 0 ?
                         <div className="dialogs__item-info-bottom-unreaded">
-                            {user.unreaded <= 9 ? user.unreaded : '9+'}
+                            {unreadedMessages <= 9 ? unreadedMessages : '9+'}
                         </div> : null
                     }
                 </div>

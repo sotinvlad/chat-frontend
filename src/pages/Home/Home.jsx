@@ -14,14 +14,15 @@ import Dialogs from '../../containers/Dialogs';
 import Messages from '../../containers/Messages';
 import dialogsAPI from '../../utils/api/dialogsAPI';
 import getUserStatus from '../../utils/helpers/getUserStatus';
-import socket from '../../core/socket';
+// import socket from '../../core/socket';
 import ModalAddDialog from '../../components/ModalAddDialog/ModalAddDialog';
-import dialogsActions from './../../redux/actions/dialogs'
+import dialogsActions from './../../redux/actions/dialogs';
 
 let dialogId = '';
 
-const Home = ({ currentDialogId, userData, updateDialog }) => {
+const Home = ({ currentDialogId, userData, updateDialog, socket }) => {
     dialogId = currentDialogId;
+    console.log({ currentDialogId, userData, updateDialog, socket })
     const getStatus = (id) => {
         dialogsAPI.getDialog(id)
         .then(data => {
@@ -101,6 +102,7 @@ const Home = ({ currentDialogId, userData, updateDialog }) => {
 const mapStateToProps = (state) => ({
     currentDialogId: state.dialogs.currentDialogId,
     userData: state.user.data,
+    socket: state.user.socket,
 })
 
 export default connect(mapStateToProps, { ...dialogsActions })(Home);

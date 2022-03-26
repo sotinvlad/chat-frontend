@@ -23,6 +23,7 @@ const dialogsReducer = (state = initialState, action) => {
                 isLoading: action.payload
             };
         case 'DIALOGS:UPDATE_DIALOG':
+            console.log(action.payload)
             state.items.forEach((item,index) => item._id === action.payload._id ? state.items[index] = action.payload : null);
             const newItems = [...state.items];
             return {

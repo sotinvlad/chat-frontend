@@ -16,6 +16,7 @@ import './Dialogs.scss';
 import generateDialogName from '../../utils/helpers/generateDialogName';
 
 export const Dialogs = ({items, userData, currentDialogId, isLoading, handleChange, searchValue, onDialogClick}) => {
+    console.log(items)
     return (
         <div className='dialogs'>
             <div className="dialogs__search">
@@ -38,6 +39,7 @@ export const Dialogs = ({items, userData, currentDialogId, isLoading, handleChan
                             createdAt={item.createdAt}
                             onDialogClick={onDialogClick}
                             currentDialogId={currentDialogId}
+                            unreadedMessages={item.dialogParticipants.filter(obj => obj.user._id === userData._id)[0].unreadedMessages}
                         />
                     )
                     : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description = {'Контакты не найдены :('}/>

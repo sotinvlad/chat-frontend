@@ -12,9 +12,9 @@ import { connect } from 'react-redux';
 import { Dialogs as BaseDialogs } from '../components/Dialogs/Dialogs';
 import filterDialogs from '../utils/helpers/filterDialogs';
 import dialogsActions from './../redux/actions/dialogs';
-import socket from './../core/socket';
+// import socket from './../core/socket';
 
-const Dialogs = ({items, userData, isLoading, currentDialogId, fetchDialogs, onDialogClick, updateDialog}) => {
+const Dialogs = ({ items, userData, isLoading, currentDialogId, fetchDialogs, onDialogClick, updateDialog, socket }) => {
     const [inputValue, setInputValue] = useState('');
     const [filtered, setFiltered] = useState(items);
     const handleChange = (e) => {
@@ -61,7 +61,8 @@ const mapStateToProps = (state) => ({
     items: state.dialogs.items,
     isLoading: state.dialogs.isLoading,
     currentDialogId: state.dialogs.currentDialogId, 
-    userData: state.user.data
+    userData: state.user.data,
+    socket: state.user.socket
 })
 
 export default connect(mapStateToProps, dialogsActions)(Dialogs);
