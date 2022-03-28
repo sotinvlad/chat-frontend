@@ -16,7 +16,6 @@ import './Dialogs.scss';
 import generateDialogName from '../../utils/helpers/generateDialogName';
 
 export const Dialogs = ({items, userData, currentDialogId, isLoading, handleChange, searchValue, onDialogClick}) => {
-    console.log(items)
     return (
         <div className='dialogs'>
             <div className="dialogs__search">
@@ -28,7 +27,7 @@ export const Dialogs = ({items, userData, currentDialogId, isLoading, handleChan
                 isLoading ? 
                     <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
                 :
-                    items.length ? orderBy(items, 'createdAt', 'desc').map(item =>
+                    items.length ? orderBy(items, 'lastMessage.createdAt', 'desc').map(item =>
                         <DialogItem
                             key={item._id}
                             id={item._id}
@@ -52,34 +51,53 @@ export const Dialogs = ({items, userData, currentDialogId, isLoading, handleChan
 
 /*
 EXAPMLE items: [
-    {
-        "_id": "6210b06364377aef56b6c7a9",
-        "dialogParticipants": [
-            {
+{
+    "_id": "623edef6a4ce16aaab28d5c7",
+    "dialogParticipants": [
+        {
+            "user": {
+                "_id": "61bdccf3aa5136ef68abadae",
+                "email": "khilko@yandex.com",
+                "fullname": "п-к Хилько В.О.",
+                "password": "$2b$10$yCabo/gqhNBs19uOG5buDOXQY8Q3AFwOErRFnusYgGTtvfgM0w0au",
+                "confirmed": false,
+                "createdAt": "2021-12-18T11:58:43.882Z",
+                "updatedAt": "2022-03-28T08:02:52.117Z",
+                "__v": 0,
+                "last_seen": "Mon Mar 28 2022 11:02:52 GMT+0300 (Москва, стандартное время)"
+            },
+            "unreadedMessages": 0,
+            "_id": "623edef6a4ce16aaab28d5c8"
+        },
+        {
+            "user": {
                 "_id": "61bdcee52c0f13ebd1b63d1c",
                 "email": "test@yandex.com",
                 "fullname": "Test",
                 "password": "$2b$10$zmaI22GQnHVhYN.7pJByC.mil5TAQVCQo0BsoZ7s44mEQBdU8HHOS",
                 "confirmed": false,
                 "createdAt": "2021-12-18T12:07:01.503Z",
-                "updatedAt": "2022-02-22T13:54:19.995Z",
+                "updatedAt": "2022-03-28T08:02:48.850Z",
                 "__v": 0,
-                "last_seen": "Tue Feb 22 2022 16:54:19 GMT+0300 (Москва, стандартное время)"
+                "last_seen": "Mon Mar 28 2022 11:02:48 GMT+0300 (Москва, стандартное время)"
             },
-            {
-                "_id": "61b212b8f122e4c0500fd9bd",
-                "email": "leo@yandex.com",
-                "fullname": "Leo Bonart",
-                "password": "qwerty",
-                "confirmed": false,
-                "createdAt": "2021-12-09T14:29:12.202Z",
-                "updatedAt": "2021-12-09T14:29:12.202Z",
-                "__v": 0
-            }
-        ],
-        "createdAt": "2022-02-19T08:54:59.600Z",
-        "updatedAt": "2022-02-19T08:54:59.600Z",
+            "unreadedMessages": 0,
+            "_id": "623edef6a4ce16aaab28d5c9"
+        }
+    ],
+    "createdAt": "2022-03-26T09:37:58.143Z",
+    "updatedAt": "2022-03-28T08:02:52.129Z",
+    "__v": 0,
+    "lastMessage": {
+        "_id": "623ee8973817b774fb1c1ac2",
+        "text": "for test",
+        "dialogId": "623edef6a4ce16aaab28d5c7",
+        "user": "61bdccf3aa5136ef68abadae",
+        "attachments": [],
+        "isReaded": true,
+        "createdAt": "2022-03-26T10:19:03.816Z",
+        "updatedAt": "2022-03-26T10:19:03.877Z",
         "__v": 0
     }
-]
+}]
 */

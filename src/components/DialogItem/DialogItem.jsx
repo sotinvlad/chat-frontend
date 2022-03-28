@@ -14,7 +14,6 @@ import getNameOfFile from '../../utils/helpers/getNameOfFile';
 
 const DialogItem = ({id, user, lastMessage, isMe, isReaded, currentDialogId, onDialogClick, unreadedMessages}) => {
     const dataOfUser = user.user;
-    console.log({id, user, lastMessage, isMe, isReaded, currentDialogId, onDialogClick, unreadedMessages})
     return (
         <div 
             className={classNames(

@@ -16,9 +16,6 @@ import pauseIcon from '../../assets/img/pause.svg';
 import convertCurrentTime from '../../utils/helpers/convertCurrentTime';
 import Avatar from '../Avatar/Avatar';
 import messagesAPI from '../../utils/api/messagesAPI';
-import axios from './../../core/axios';
-import { Redirect } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import getNameOfFile from '../../utils/helpers/getNameOfFile';
 
 

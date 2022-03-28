@@ -1,3 +1,6 @@
+import MessageReceivedSound from './../../assets/MessageReceivedSound.mp3';
+const MessageReceivedAudio = new Audio(MessageReceivedSound);
+MessageReceivedAudio.volume = 0.1;
 const initialState = {
     items: [],
     currentDialogId: null,
@@ -23,8 +26,16 @@ const dialogsReducer = (state = initialState, action) => {
                 isLoading: action.payload
             };
         case 'DIALOGS:UPDATE_DIALOG':
-            console.log(action.payload)
-            state.items.forEach((item,index) => item._id === action.payload._id ? state.items[index] = action.payload : null);
+            if(state.currentDialogId !== null && action.payload._id.toString() === state.currentDialogId.toString()){
+                action.payload.dialogParticipants.forEach((i, index, dialogParticipants)=> {
+                    dialogParticipants[index].unreadedMessages = 0;
+                })
+            }
+            state.items.forEach((item,index) => {
+                if(item._id === action.payload._id){
+                    state.items[index] = action.payload;
+                };
+            });
             const newItems = [...state.items];
             return {
                 ...state,

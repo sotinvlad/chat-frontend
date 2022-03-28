@@ -14,15 +14,16 @@ import Dialogs from '../../containers/Dialogs';
 import Messages from '../../containers/Messages';
 import dialogsAPI from '../../utils/api/dialogsAPI';
 import getUserStatus from '../../utils/helpers/getUserStatus';
-// import socket from '../../core/socket';
 import ModalAddDialog from '../../components/ModalAddDialog/ModalAddDialog';
 import dialogsActions from './../../redux/actions/dialogs';
+import MessageReceivedSound from './../../assets/MessageReceivedSound.mp3';
 
 let dialogId = '';
 
 const Home = ({ currentDialogId, userData, updateDialog, socket }) => {
     dialogId = currentDialogId;
-    console.log({ currentDialogId, userData, updateDialog, socket })
+    const MessageReceivedAudio = new Audio(MessageReceivedSound);
+    MessageReceivedAudio.volume = 0.1;
     const getStatus = (id) => {
         dialogsAPI.getDialog(id)
         .then(data => {
@@ -53,8 +54,15 @@ const Home = ({ currentDialogId, userData, updateDialog, socket }) => {
         socket.on('SERVER:UPDATE_STATUS', () => {
             getStatus(dialogId);
         })
+        socket.on('SERVER:SEND_MESSAGE', (data) => {
+            if(data.user._id.toString() !== userData._id){
+                console.log('sound beeping...')
+                MessageReceivedAudio.play();
+            }
+        })
         return () => {
             socket.removeAllListeners('SERVER:UPDATE_STATUS');
+            socket.removeAllListeners('SERVER:SEND_MESSAGE');
         }
     }, []);
 

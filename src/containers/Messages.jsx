@@ -8,20 +8,23 @@ import { connect } from 'react-redux';
 
 import BaseMessages from '../components/Messages/Messages';
 import messagesActions from './../redux/actions/messages';
+import MessageReceivedSound from './../assets/MessageReceivedSound.mp3';
 
 
 const Messages = ({items, currentDialogId, userData, isLoading, fetchMessages, addMessage, deleteMessage, updateMessage, socket}) => {
     const messagesBlock = useRef();
+    const onSendMessage = (data) => {
+        console.log('SERVER:SEND_MESSAGE', data)
+        if (data.dialogId === currentDialogId){
+            addMessage(data);
+            if (data.user._id !== userData._id){
+                socket.emit('CLIENT:MESSAGE_IS_READED', data._id)
+            }
+        }
+    }
     useEffect(() => {
         if (currentDialogId){            
-            socket.on('SERVER:SEND_MESSAGE', data => {
-                if (data.dialogId === currentDialogId){
-                    addMessage(data);
-                    if (data.user._id !== userData._id){
-                        socket.emit('CLIENT:MESSAGE_IS_READED', data._id)
-                    }
-                }
-            });
+            socket.on('SERVER:SEND_MESSAGE', onSendMessage);
             socket.on('SERVER:MESSAGE_UPDATE', data => {
                 console.log('SERVER:MESSAGE_UPDATE', data)
                 updateMessage(data._id, data.text, data.isReaded, data.attachments);
@@ -32,7 +35,7 @@ const Messages = ({items, currentDialogId, userData, isLoading, fetchMessages, a
             })
         }
         return () => {
-            socket.removeAllListeners('SERVER:SEND_MESSAGE');
+            socket.removeListener('SERVER:SEND_MESSAGE', onSendMessage);
             socket.removeAllListeners('SERVER:MESSAGE_UPDATE');
             socket.removeAllListeners('SERVER:MESSAGE_DELETE');
         }
