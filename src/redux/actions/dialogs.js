@@ -6,8 +6,8 @@ const actions = {
         payload: data
     }),
 
-    setCurrentDialogId: (data) => ({
-        type: 'DIALOGS:SET_CURRENT_DIALOG_ID',
+    setCurrentDialog: (data) => ({
+        type: 'DIALOGS:SET_CURRENT_DIALOG',
         payload: data
     }),
 
@@ -22,7 +22,7 @@ const actions = {
     }),
 
     onDialogClick: (data) => (dispatch) => {
-        dispatch(actions.setCurrentDialogId(data));
+        dispatch(actions.setCurrentDialog(data));
     },
 
     fetchDialogs: (id) => (dispatch) => {

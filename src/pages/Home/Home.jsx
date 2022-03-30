@@ -20,8 +20,8 @@ import MessageReceivedSound from './../../assets/MessageReceivedSound.mp3';
 
 let dialogId = '';
 
-const Home = ({ currentDialogId, userData, updateDialog, socket }) => {
-    dialogId = currentDialogId;
+const Home = ({ currentDialog, userData, updateDialog, socket }) => {
+    dialogId = currentDialog._id;
     const MessageReceivedAudio = new Audio(MessageReceivedSound);
     MessageReceivedAudio.volume = 0.1;
     const getStatus = (id) => {
@@ -48,7 +48,7 @@ const Home = ({ currentDialogId, userData, updateDialog, socket }) => {
     useEffect(() => {
         if (dialogId)
             getStatus(dialogId);
-    }, [currentDialogId]);
+    }, [currentDialog._id]);
 
     useEffect(() => {
         socket.on('SERVER:UPDATE_STATUS', () => {
@@ -85,7 +85,7 @@ const Home = ({ currentDialogId, userData, updateDialog, socket }) => {
                 <div className="chat__dialog">
                     <div className="chat__dialog-header">
                         <div className="chat__dialog-header-block"></div>
-                        {currentDialogId ?
+                        {currentDialog._id ?
                         <div className="chat__dialog-header-status">
                             <span className="chat__dialog-header-status-fullname" id='interlocutorName'></span>
                             <span className="status status--online" id='interlocutorStatus'></span> 
@@ -96,7 +96,7 @@ const Home = ({ currentDialogId, userData, updateDialog, socket }) => {
                     <div className="chat__dialog-messages">
                         <Messages />
                     </div>
-                    {currentDialogId ? 
+                    {currentDialog._id ? 
                         <div className="chat__dialog-input">
                             <ChatInput />
                         </div> : null
@@ -108,7 +108,7 @@ const Home = ({ currentDialogId, userData, updateDialog, socket }) => {
 }
 
 const mapStateToProps = (state) => ({
-    currentDialogId: state.dialogs.currentDialogId,
+    currentDialog: state.dialogs.currentDialog,
     userData: state.user.data,
     socket: state.user.socket,
 })

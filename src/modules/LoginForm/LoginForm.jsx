@@ -18,7 +18,7 @@ import { Block } from '../../components/Block/Block';
 // import validateFunc from '../../utils/validate';
 import store from './../../redux/store';
 import userActions from './../../redux/actions/user';
-import userApi from './../../utils/api/user';
+import userApi from './../../utils/api/userAPI';
 import openNotification from '../../utils/helpers/openNotification';
 import axios from './../../core/axios';
 

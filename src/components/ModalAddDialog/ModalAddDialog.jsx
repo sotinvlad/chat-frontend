@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Select } from 'antd';
 
 import './ModalAddDialog.scss';
-import userAPI from '../../utils/api/user';
+import userAPI from '../../utils/api/userAPI';
 import dialogsAPI from '../../utils/api/dialogsAPI';
 
 

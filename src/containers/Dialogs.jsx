@@ -14,7 +14,7 @@ import filterDialogs from '../utils/helpers/filterDialogs';
 import dialogsActions from './../redux/actions/dialogs';
 // import socket from './../core/socket';
 
-const Dialogs = ({ items, userData, isLoading, currentDialogId, fetchDialogs, onDialogClick, updateDialog, socket }) => {
+const Dialogs = ({ items, userData, isLoading, currentDialog, fetchDialogs, onDialogClick, updateDialog, socket, setCurrentDialog }) => {
     const [inputValue, setInputValue] = useState('');
     const [filtered, setFiltered] = useState(items);
     const handleChange = (e) => {
@@ -28,8 +28,10 @@ const Dialogs = ({ items, userData, isLoading, currentDialogId, fetchDialogs, on
             fetchDialogs(userData._id)
         })
         socket.on('SERVER:UPDATE_DIALOG', dialog => {
-            console.log('SERVER:UPDATE_DIALOG', dialog)
             updateDialog(dialog);
+            if(currentDialog._id === dialog._id){
+                setCurrentDialog(dialog);
+            }
         })
         return () => {
             socket.removeAllListeners('SERVER:DIALOG_CREATED');
@@ -41,14 +43,14 @@ const Dialogs = ({ items, userData, isLoading, currentDialogId, fetchDialogs, on
     }, [userData]); // eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(()   => {
-        setFiltered(items);
+        setFiltered(filterDialogs(items, inputValue, userData));
     }, [items])
     
     return (
         <BaseDialogs 
             items = {filtered}
             userData = {userData}
-            currentDialogId = {currentDialogId}
+            currentDialog = {currentDialog}
             onDialogClick = {onDialogClick}
             isLoading = {isLoading}
             handleChange={handleChange}
@@ -60,7 +62,7 @@ const Dialogs = ({ items, userData, isLoading, currentDialogId, fetchDialogs, on
 const mapStateToProps = (state) => ({
     items: state.dialogs.items,
     isLoading: state.dialogs.isLoading,
-    currentDialogId: state.dialogs.currentDialogId, 
+    currentDialog: state.dialogs.currentDialog, 
     userData: state.user.data,
     socket: state.user.socket
 })

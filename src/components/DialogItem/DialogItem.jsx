@@ -12,7 +12,7 @@ import getMessageTime from '../../utils/helpers/getMessageTime';
 import getNameOfFile from '../../utils/helpers/getNameOfFile';
 
 
-const DialogItem = ({id, user, lastMessage, isMe, isReaded, currentDialogId, onDialogClick, unreadedMessages}) => {
+const DialogItem = ({id, user, lastMessage, isMe, isReaded, currentDialog, onDialogClick, unreadedMessages, dialogData}) => {
     const dataOfUser = user.user;
     return (
         <div 
@@ -20,9 +20,9 @@ const DialogItem = ({id, user, lastMessage, isMe, isReaded, currentDialogId, onD
                 'dialogs__item', 
                 {
                     'dialogs__item--online' : differenceInMinutes(new Date(), new Date(dataOfUser.last_seen)) < 5, 
-                    'dialogs__item--active' : currentDialogId === id
+                    'dialogs__item--active' : currentDialog._id === id
                 })}
-            onClick={() => onDialogClick(id)}
+            onClick={() => onDialogClick(dialogData)}
             >
             <div className="dialogs__item-avatar">
                 <Avatar user={dataOfUser} id={id} />
@@ -31,7 +31,7 @@ const DialogItem = ({id, user, lastMessage, isMe, isReaded, currentDialogId, onD
                 <div className="dialogs__item-info-top">
                     <span className='dialogs__item-info-top-username'>{dataOfUser.fullname}</span>
                     <span className='dialogs__item-info-top-date'>
-                        {lastMessage === undefined ? getMessageTime(lastMessage.createdAt) : null} 
+                        {!lastMessage || lastMessage === 'Сообщений нет...' ? null : getMessageTime(lastMessage.createdAt)} 
                     </span>
                 </div>
                 <div className="dialogs__item-info-bottom">
@@ -78,6 +78,6 @@ EXAMPLE props
         "__v": 0
     },
     "createdAt": "2022-02-19T08:54:59.600Z",
-    "currentDialogId": null
+    "currentDialog": null
 }
 */

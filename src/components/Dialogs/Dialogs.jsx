@@ -15,7 +15,7 @@ import DialogItem from '../DialogItem/DialogItem';
 import './Dialogs.scss';
 import generateDialogName from '../../utils/helpers/generateDialogName';
 
-export const Dialogs = ({items, userData, currentDialogId, isLoading, handleChange, searchValue, onDialogClick}) => {
+export const Dialogs = ({items, userData, currentDialog, isLoading, handleChange, searchValue, onDialogClick}) => {
     return (
         <div className='dialogs'>
             <div className="dialogs__search">
@@ -33,12 +33,13 @@ export const Dialogs = ({items, userData, currentDialogId, isLoading, handleChan
                             id={item._id}
                             user={generateDialogName(item.dialogParticipants, userData._id)}
                             lastMessage={item.lastMessage ? item.lastMessage : "Сообщений нет..."}
-                            isMe={item.isMe} 
-                            isReaded={item.isReaded}
+                            isMe={item.lastMessage && item.lastMessage !== 'Сообщений нет...' && item.lastMessage.user === userData._id} 
+                            isReaded={item.lastMessage && item.lastMessage !== 'Сообщений нет...' && item.lastMessage.isReaded}
                             createdAt={item.createdAt}
                             onDialogClick={onDialogClick}
-                            currentDialogId={currentDialogId}
+                            currentDialog={currentDialog}
                             unreadedMessages={item.dialogParticipants.filter(obj => obj.user._id === userData._id)[0].unreadedMessages}
+                            dialogData={item}
                         />
                     )
                     : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description = {'Контакты не найдены :('}/>

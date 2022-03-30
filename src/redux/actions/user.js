@@ -1,4 +1,4 @@
-import userAPI from "../../utils/api/user";
+import userAPI from "../../utils/api/userAPI";
 
 const actions = {
     setUserData: (data) => ({

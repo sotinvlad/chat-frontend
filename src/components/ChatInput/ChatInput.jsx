@@ -10,7 +10,7 @@ import messagesAPI from '../../utils/api/messagesAPI';
 import axios from '../../core/axios';
 
 
-const ChatInput = ({ userData, currentDialogId }) => {
+const ChatInput = ({ userData, currentDialog, socket }) => {
 
     const [input, setInput] = useState('');
     const [showEmoji, setShowEmoji] = useState(false);
@@ -23,7 +23,12 @@ const ChatInput = ({ userData, currentDialogId }) => {
 
     const onKeyUp = (e, input) => {
         if (e.keyCode == 13)
-            sendMessage(input, currentDialogId, userData._id);
+            sendMessage(input, currentDialog._id, userData._id);
+    }
+
+    const onChange = (e) =>{
+        setInput(e.target.value);
+        socket.emit('CLIENT:IS_TYPING', {dialogId: currentDialog._id, userId: userData._id});
     }
 
     const sendMessage = (text, dialogId, userId) => {
@@ -89,7 +94,7 @@ const ChatInput = ({ userData, currentDialogId }) => {
                 </div>
             </Popover>
             <Input
-                onChange={e => setInput(e.target.value)}
+                onChange={e => onChange(e)}
                 onKeyUp={e => onKeyUp(e, input)}
                 size='large'
                 placeholder="Введите текст сообщения..."
@@ -107,7 +112,7 @@ const ChatInput = ({ userData, currentDialogId }) => {
                         size={'20px'}
                         disabled={uploading}
                         loading={uploading}
-                        onClick={() => sendMessage(input, currentDialogId, userData._id)}
+                        onClick={() => sendMessage(input, currentDialog._id, userData._id)}
                     />}
             </div>
         </div>
@@ -115,8 +120,9 @@ const ChatInput = ({ userData, currentDialogId }) => {
 }
 
 const mapStateToProps = (state) => ({
-    currentDialogId: state.dialogs.currentDialogId,
+    currentDialog: state.dialogs.currentDialog,
     userData: state.user.data,
+    socket: state.user.socket,
 })
 
 export default connect(mapStateToProps, messagesActions)(ChatInput);

@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 import { withFormik } from 'formik';
 
 import validateFunc from '../../utils/validate';
-import userApi from './../../utils/api/user';
+import userApi from './../../utils/api/userAPI';
 import openNotification from '../../utils/helpers/openNotification';
 
 const RegisterForm = (props) => {

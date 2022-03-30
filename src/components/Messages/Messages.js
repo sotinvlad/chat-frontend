@@ -4,7 +4,7 @@
 -Если текущий диалог не имеет сообщений отображает это
 -При загрузке диалогов отображает спиннер
 */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Empty, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
@@ -12,7 +12,7 @@ import classnames from 'classnames';
 import Message from '../Message/Message';
 import './Messages.scss';
 
-const Messages = ({items, isLoading, currentDialogId, userData, messagesBlock}) => {
+const Messages = ({items, isLoading, currentDialog, userData, messagesBlock}) => {
     return (
         <div 
             className={classnames('messages', {'messages--loading' : isLoading})}
@@ -29,8 +29,11 @@ const Messages = ({items, isLoading, currentDialogId, userData, messagesBlock}) 
                             isMe = {userData._id === item.user._id}
                             userData = {userData}
                             />) 
-                    :   <Empty  description={currentDialogId === null ? 'Выберите чат, чтобы начать общение' : 'Сообщений пока нет...'}/>
-                    
+                    :   <Empty  description={currentDialog._id === null ? 'Выберите чат, чтобы начать общение' : 'Сообщений пока нет...'}/>
+            }
+            {
+                currentDialog._id !== '' && currentDialog.dialogParticipants.filter(obj => obj.isTyping === true && obj.user._id !== userData._id).map(obj => 
+                <Message isTyping={true} key = {obj.user._id} _id = {obj.user._id} user = {obj.user} userData = {userData} dialogId = {currentDialog._id}/>)
             }
         </div>
     )

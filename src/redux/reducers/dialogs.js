@@ -3,7 +3,9 @@ const MessageReceivedAudio = new Audio(MessageReceivedSound);
 MessageReceivedAudio.volume = 0.1;
 const initialState = {
     items: [],
-    currentDialogId: null,
+    currentDialog: {
+        _id: '',
+    },
     isLoading: false
 }
 
@@ -15,10 +17,10 @@ const dialogsReducer = (state = initialState, action) => {
                 items: action.payload,
                 isLoading: false
             };
-        case 'DIALOGS:SET_CURRENT_DIALOG_ID':
+        case 'DIALOGS:SET_CURRENT_DIALOG':
             return {
                 ...state,
-                currentDialogId: action.payload
+                currentDialog: action.payload
             };
         case 'DIALOGS:SET_IS_LOADING':
             return {
@@ -26,7 +28,7 @@ const dialogsReducer = (state = initialState, action) => {
                 isLoading: action.payload
             };
         case 'DIALOGS:UPDATE_DIALOG':
-            if(state.currentDialogId !== null && action.payload._id.toString() === state.currentDialogId.toString()){
+            if(state.currentDialog._id !== '' && action.payload._id.toString() === state.currentDialog._id.toString()){
                 action.payload.dialogParticipants.forEach((i, index, dialogParticipants)=> {
                     dialogParticipants[index].unreadedMessages = 0;
                 })

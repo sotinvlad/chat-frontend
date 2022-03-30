@@ -1,6 +1,6 @@
 /*
--Контейнерный компонент, который запрашивает сообщения при изменении CurrentDialogId
--Если CurrentDialogId === null не запрашивает
+-Контейнерный компонент, который запрашивает сообщения при изменении CurrentDialog._id
+-Если CurrentDialog._id === null не запрашивает
 -Через реф получает доступ к окну отрисовки сообщений и при изменении сообщений прокручивает его вниз
 */
 import React, { useEffect, useRef } from 'react'
@@ -8,14 +8,12 @@ import { connect } from 'react-redux';
 
 import BaseMessages from '../components/Messages/Messages';
 import messagesActions from './../redux/actions/messages';
-import MessageReceivedSound from './../assets/MessageReceivedSound.mp3';
 
 
-const Messages = ({items, currentDialogId, userData, isLoading, fetchMessages, addMessage, deleteMessage, updateMessage, socket}) => {
+const Messages = ({items, currentDialog, userData, isLoading, fetchMessages, addMessage, deleteMessage, updateMessage, socket}) => {
     const messagesBlock = useRef();
     const onSendMessage = (data) => {
-        console.log('SERVER:SEND_MESSAGE', data)
-        if (data.dialogId === currentDialogId){
+        if (data.dialogId === currentDialog._id){
             addMessage(data);
             if (data.user._id !== userData._id){
                 socket.emit('CLIENT:MESSAGE_IS_READED', data._id)
@@ -23,7 +21,7 @@ const Messages = ({items, currentDialogId, userData, isLoading, fetchMessages, a
         }
     }
     useEffect(() => {
-        if (currentDialogId){            
+        if (currentDialog._id){            
             socket.on('SERVER:SEND_MESSAGE', onSendMessage);
             socket.on('SERVER:MESSAGE_UPDATE', data => {
                 console.log('SERVER:MESSAGE_UPDATE', data)
@@ -39,14 +37,13 @@ const Messages = ({items, currentDialogId, userData, isLoading, fetchMessages, a
             socket.removeAllListeners('SERVER:MESSAGE_UPDATE');
             socket.removeAllListeners('SERVER:MESSAGE_DELETE');
         }
-    }, [currentDialogId]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [currentDialog._id]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        if (currentDialogId !== null){
-            fetchMessages(currentDialogId);
+        if (currentDialog._id !== ''){
+            fetchMessages(currentDialog._id);
         }
-            
-    }, [currentDialogId]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [currentDialog._id]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         messagesBlock.current.scrollTo(0,999999);
@@ -55,7 +52,7 @@ const Messages = ({items, currentDialogId, userData, isLoading, fetchMessages, a
     return (
         <BaseMessages
             messagesBlock={messagesBlock}
-            currentDialogId = {currentDialogId}
+            currentDialog = {currentDialog}
             items = {items}
             userData = {userData}
             isLoading = {isLoading}
@@ -65,7 +62,7 @@ const Messages = ({items, currentDialogId, userData, isLoading, fetchMessages, a
 
 const mapStateToProps = (state) => ({
     items: state.messages.items,
-    currentDialogId: state.dialogs.currentDialogId,
+    currentDialog: state.dialogs.currentDialog,
     userData: state.user.data,
     isLoading: state.messages.isLoading,
     socket: state.user.socket,
