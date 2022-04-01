@@ -23,11 +23,20 @@ const Dialogs = ({ items, userData, isLoading, currentDialog, fetchDialogs, onDi
     }
     useEffect(() => {
         socket.on('SERVER:DIALOG_CREATED', () => {
+            console.log('SERVER:DIALOG_CREATED')
             socket.disconnect();
             socket.connect();
             fetchDialogs(userData._id)
         })
+        socket.on('SERVER:DIALOG_DELETED', (dialogId)=>{
+            console.log('SERVER:DIALOG_DELETED')
+            fetchDialogs(userData._id);
+            setCurrentDialog({
+                _id: '',
+            })
+        })
         socket.on('SERVER:UPDATE_DIALOG', dialog => {
+            console.log('SERVER:UPDATE_DIALOG')
             updateDialog(dialog);
             if(currentDialog._id === dialog._id){
                 setCurrentDialog(dialog);
@@ -35,6 +44,8 @@ const Dialogs = ({ items, userData, isLoading, currentDialog, fetchDialogs, onDi
         })
         return () => {
             socket.removeAllListeners('SERVER:DIALOG_CREATED');
+            socket.removeAllListeners('SERVER:DIALOG_DELETED');
+            socket.removeAllListeners('SERVER:UPDATE_DIALOG');
         }
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 

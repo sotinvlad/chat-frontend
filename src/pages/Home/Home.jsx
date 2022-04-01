@@ -17,6 +17,8 @@ import getUserStatus from '../../utils/helpers/getUserStatus';
 import ModalAddDialog from '../../components/ModalAddDialog/ModalAddDialog';
 import dialogsActions from './../../redux/actions/dialogs';
 import MessageReceivedSound from './../../assets/MessageReceivedSound.mp3';
+import { Popover } from 'antd';
+import PopoverOfHomePage from '../../components/PopoverOfHomePage/PopoverOfHomePage';
 
 let dialogId = '';
 
@@ -91,7 +93,9 @@ const Home = ({ currentDialog, userData, updateDialog, socket }) => {
                             <span className="status status--online" id='interlocutorStatus'></span> 
                         </div>: null
                         }
-                        <EllipsisOutlined style={{ fontSize: '26px' }} onClick={() => {window.localStorage.removeItem('user')}}/>
+                        <Popover content={<PopoverOfHomePage/>} trigger='click'>
+                            <EllipsisOutlined style={{ fontSize: '26px' }}/>
+                        </Popover>
                     </div>
                     <div className="chat__dialog-messages">
                         <Messages />

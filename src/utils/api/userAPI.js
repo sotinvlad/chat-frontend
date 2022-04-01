@@ -1,8 +1,8 @@
 import axios from '../../core/axios';
 
 const userAPI = {
-    login: (data) => {
-        return axios.post('http://localhost:5000/user/login', data);
+    login: ({email, password}) => {
+        return axios.post('http://localhost:5000/user/login', {email, password: password});
     },
 
     register: (data) => {

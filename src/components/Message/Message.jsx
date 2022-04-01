@@ -43,21 +43,6 @@ const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReade
         }
     }
 
-    // const downloadFile = (filename) => {
-    //     axios.get(`http://localhost:5000/file/${filename}`)
-    //     .then(res => {
-    //         const contentDisposition = res.headers['content-disposition'];
-    //         const fileName = contentDisposition.split(';')[1].split('=')[1];
-    //         const url = window.URL.createObjectURL(new Blob([res.data]));
-    //         const link = document.createElement('a');
-    //         link.href = url;
-    //         console.log(res);
-    //         link.setAttribute('download', `s.png`);
-    //         document.body.appendChild(link);
-    //         link.click();
-    //     })
-    //     }
-
     return (
         <div className={classNames('message',
             {

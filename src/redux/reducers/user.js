@@ -12,7 +12,14 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'USER:SET_USER_DATA':
-            
+            if(action.payload === null){
+                return {
+                    ...state,
+                    data: null,
+                    token: null,
+                    isAuth: false
+                }
+            }
             return {
                 ...state,
                 data: action.payload.user,
