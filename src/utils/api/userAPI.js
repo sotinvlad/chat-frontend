@@ -1,8 +1,9 @@
 import axios from '../../core/axios';
+import { encodeRailFenceCipher } from './../helpers/encoderDecoder'
 
 const userAPI = {
     login: ({email, password}) => {
-        return axios.post('http://localhost:5000/user/login', {email, password: password});
+        return axios.post('http://localhost:5000/user/login', {email, password: encodeRailFenceCipher(password, 3)});
     },
 
     register: (data) => {
