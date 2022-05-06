@@ -33,7 +33,16 @@ const Messages = ({items, isLoading, currentDialog, userData, messagesBlock}) =>
             }
             {
                 currentDialog._id !== '' && currentDialog.dialogParticipants.filter(obj => obj.isTyping === true && obj.user._id !== userData._id).map(obj => 
-                <Message isTyping={true} key = {obj.user._id} _id = {obj.user._id} user = {obj.user} userData = {userData} dialogId = {currentDialog._id}/>)
+                <Message 
+                    isTyping={true} 
+                    key = {obj._id} 
+                    _id = {obj.user._id} 
+                    user = {obj.user} 
+                    userData = {userData} 
+                    dialogId = {currentDialog._id}
+                    isAudio = {obj.isAudio}
+                    audio = {obj.audio}
+                    />)
             }
         </div>
     )

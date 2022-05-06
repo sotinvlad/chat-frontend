@@ -25,7 +25,7 @@ const Messages = ({items, currentDialog, userData, isLoading, fetchMessages, add
             socket.on('SERVER:SEND_MESSAGE', onSendMessage);
             socket.on('SERVER:MESSAGE_UPDATE', data => {
                 console.log('SERVER:MESSAGE_UPDATE', data)
-                updateMessage(data._id, data.text, data.isReaded, data.attachments);
+                updateMessage(data._id, data.text, data.isReaded, data.attachments, data.audio);
             });
             socket.on('SERVER:MESSAGE_DELETE', _id => {
                 console.log('SERVER:MESSAGE_DELETE', _id)

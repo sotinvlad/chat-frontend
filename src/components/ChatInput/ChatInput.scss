@@ -53,5 +53,14 @@
         left: 0;
         bottom: 50px;
     }
+    &__recordingField{
+        width: 660px;
+        height: 38px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: red;
+        
+    }
 }
 

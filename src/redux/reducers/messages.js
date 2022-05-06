@@ -28,6 +28,7 @@ const messagesReducer = (state = initialState, action) => {
                 itemToUpdate.text = action.payload.text;
                 itemToUpdate.isReaded = action.payload.isReaded;
                 itemToUpdate.attachments = action.payload.attachments;
+                itemToUpdate.audio = action.payload.audio;
             }
             const newItems = [...state.items];
             return {

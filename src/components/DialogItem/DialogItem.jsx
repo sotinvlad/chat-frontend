@@ -37,6 +37,7 @@ const DialogItem = ({id, user, lastMessage, isMe, isReaded, currentDialog, onDia
                 <div className="dialogs__item-info-bottom">
                     <div className='dialogs__item-info-bottom-text'>
                         {lastMessage !== 'Сообщений нет...' ? lastMessage.text !== '' ? lastMessage.text : lastMessage.attachments.map(a => getNameOfFile(a)).join(';') : 'Сообщений нет...'}
+                        {lastMessage.isAudio ? 'Голосовое сообщение' : null}
                     </div>
                     {isMe ?
                             <IconReaded isMe={isMe} isReaded={isReaded} />

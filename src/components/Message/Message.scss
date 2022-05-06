@@ -43,45 +43,7 @@
         line-height: 20px;
     }
 
-    &__audio {
-        &-info {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        &-btn {
-            button {
-                cursor: pointer;
-                border: 0;
-                width: 28px;
-                height: 28px;
-                border-radius: 50%;
-                background: #0F3997;
-                img {
-                    width: 13px;
-                }
-            }
-        }
-        &-duration {
-            color: #fff;
-            font-weight: 500;
-            opacity: 0.5;
-            font-size: 14px;
-        }
-        &-progress {
-            background: #418fff;
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            transition: width 0.3s ease;
-        }
-    }
-    &--audio {
-        #{$self}__bubble {
-            width: 250px;
-        }
-    }
+    
 
     &__attachments {
         display: flex;
@@ -211,7 +173,50 @@
             margin: 2px;
         }
     }
+
+    &__audio {
+        &-info {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        &-btn {
+            button {
+                cursor: pointer;
+                border: 0;
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                background: #0F3997;
+                img {
+                    width: 13px;
+                }
+            }
+        }
+        &-duration {
+            color: #fff;
+            font-weight: 500;
+            opacity: 0.5;
+            font-size: 14px;
+        }
+        &-progress {
+            background: #0c4edc;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease;
+        }
+    }
+    &--audio {
+        #{$self}__bubble {
+            width: 250px;
+            background: #1890ff !important; 
+        }
+    }
+
 }
+
 
 @keyframes typingAnimation{
     from {

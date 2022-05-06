@@ -19,7 +19,7 @@ import messagesAPI from '../../utils/api/messagesAPI';
 import getNameOfFile from '../../utils/helpers/getNameOfFile';
 
 
-const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReaded, isTyping, attachments, audio }) => {
+const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReaded, isTyping, attachments, isAudio, audio }) => {
 
     const [popupVisible, setPopupVisible] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -49,7 +49,7 @@ const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReade
                 'message--isme': isMe,
                 'message--typing': isTyping,
                 'message--image': attachments && attachments.length === 1,
-                'message--audio': audio,
+                'message--audio': isAudio,
             })}>
             <div className="message__all">
                 <div className="message__content">
@@ -72,7 +72,7 @@ const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReade
                         </Popover> : null}
                     </div>
                     <div className="message__info">
-                        {(audio || text || isTyping) &&
+                        {(isAudio || text || isTyping) &&
                             <div className="message__bubble">
                                 {
                                     text && isEditing ?
@@ -93,7 +93,7 @@ const Message = ({ text, _id, dialogId, user, createdAt, userData, isMe, isReade
                                         <span></span>
                                     </div>
                                 }
-                                {audio && <MessageAudio audio={audio} />}
+                                {isAudio && <MessageAudio audio={audio} />}
                             </div>
                         }
                         {text === '' &&
@@ -129,7 +129,6 @@ const MessageAudio = ({ audio }) => {
 
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
-    const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
 
     const audioElem = useRef();
@@ -141,28 +140,34 @@ const MessageAudio = ({ audio }) => {
             audioElem.current.pause();
     }
 
+    const afterAudioEnded = () => {
+        setIsPlaying(false);
+        setCurrentTime(0);
+        setDuration(audioElem.current.duration);
+    }
+
+    const timeUpdate = () => {
+        setCurrentTime(audioElem.current.currentTime);
+        setDuration(audioElem.current.duration);
+    }
+
     useEffect(() => {
         audioElem.current.addEventListener('playing', () => setIsPlaying(true));
-        audioElem.current.addEventListener('loadedmetadata', () => setDuration(audioElem.current.duration));
-        audioElem.current.addEventListener('ended', () => {
-            setIsPlaying(false);
-            setProgress(0);
-            setCurrentTime(0);
-        });
+        audioElem.current.addEventListener('ended', afterAudioEnded);
         audioElem.current.addEventListener('pause', () => setIsPlaying(false));
-        audioElem.current.addEventListener('timeupdate', () => {
-            setCurrentTime(audioElem.current.currentTime);
-            setProgress((audioElem.current.currentTime / duration) * 100);
-        });
+        audioElem.current.addEventListener('timeupdate', timeUpdate);
         return (() => {
-            // audioElem.current.removeEventListener('playing', () => setIsPlaying(true));
-            // audioElem.current.removeEventListener('ended', () => setIsPlaying(false));
-            // audioElem.current.removeEventListener('pause', () => setIsPlaying(false));
+            if (audioElem.current) {
+                audioElem.current.removeEventListener('ended', afterAudioEnded);
+                audioElem.current.removeEventListener('timeupdate', timeUpdate);
+                audioElem.current.removeEventListener('playing', () => setIsPlaying(true));
+                audioElem.current.removeEventListener('playing', () => setIsPlaying(false));
+            }
         })
-    })
+    }, [])
     return <div className="message__audio">
-        <audio src={audio} ref={audioElem} preload='true' />
-        <div className="message__audio-progress" style={{ width: `${progress}%`, height: '100%' }}></div>
+        <audio src={`http://localhost:5000/file/${audio}`} ref={audioElem} preload='true' />
+        <div className="message__audio-progress" style={{ width: `${(currentTime/duration)*100}%`, height: '100%' }}></div>
         <div className="message__audio-info">
             <div className="message__audio-btn">
                 <button onClick={togglePlay}>
