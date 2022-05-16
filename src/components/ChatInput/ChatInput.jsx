@@ -155,7 +155,7 @@ const ChatInput = ({ userData, currentDialog, socket }) => {
             {
                 isRecording ?
                     <div className="chat-input__recordingField">
-
+                        <i></i>
                         <span>Идет запись...</span>
                         <Button onClick={() => setIsRecording(false)}>Отмена</Button>
                     </div>
